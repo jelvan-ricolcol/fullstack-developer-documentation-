@@ -3,13 +3,14 @@ name: Deploy DevPilot
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    name: Build & Deploy to Cloudflare Pages
+    name: Build & Deploy to Cloudflare
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +26,19 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Sync Worker runtime Cloudflare secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/sync-worker-secrets.mjs
+
+      - name: Deploy Cloudflare Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1

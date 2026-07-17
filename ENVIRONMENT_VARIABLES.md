@@ -83,6 +83,14 @@ This document catalogs every environment variable used across frontend, backend,
 | `STRIPE_WEBHOOK_SECRET` | secret | CF Secrets | Payments | Stripe webhook signing secret |
 | `SENTRY_DSN` | secret | CF Secrets | No | Sentry error tracking DSN |
 
+### Current Worker Runtime Secrets Used In This Repository
+
+| Variable | Type | Where Set | Required | Description |
+|---|---|---|---|---|
+| `CF_TOKEN` | secret | CF Secret (synced from GitHub Secret in deploy workflow) | Yes | Worker-side Cloudflare API token |
+| `CF_ACCOUNT_ID` | string | CF Secret (synced from GitHub Secret in deploy workflow) | Yes | Worker-side Cloudflare account ID |
+| `GITHUB_TOKEN` | secret | CF Secret (manual) | Optional | Enables Worker-side GitHub API proxying without browser tokens |
+
 ---
 
 ## Frontend (Vite / Browser)
@@ -109,6 +117,8 @@ This document catalogs every environment variable used across frontend, backend,
 | `CF_WORKER_NAME` | GitHub Variable | Worker script name |
 | `STAGING_D1_DATABASE_ID` | GitHub Variable | D1 DB ID for staging |
 | `PRODUCTION_D1_DATABASE_ID` | GitHub Variable | D1 DB ID for production |
+
+The current `.github/workflows/deploy.yml` runs `node scripts/sync-worker-secrets.mjs` to sync `CLOUDFLARE_API_TOKEN` into the Worker secret `CF_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` into the Worker secret `CF_ACCOUNT_ID` before deploying the backend.
 
 ---
 

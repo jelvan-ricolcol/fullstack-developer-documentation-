@@ -4,7 +4,7 @@
 
 ## Overview
 
-Deployment to Cloudflare Workers and Pages via Wrangler CLI and GitHub Actions.
+Deployment to Cloudflare Workers and Pages via Wrangler CLI and GitHub Actions. The current repository workflow deploys the `devpilot-api` Worker and the `devpilot-dashboard` Pages project from `.github/workflows/deploy.yml`.
 
 ## Wrangler Commands
 
@@ -13,7 +13,7 @@ Deployment to Cloudflare Workers and Pages via Wrangler CLI and GitHub Actions.
 wrangler deploy --env production
 
 # Deploy Pages
-wrangler pages deploy dist --project-name my-frontend
+wrangler pages deploy dist --project-name devpilot-dashboard
 
 # Apply D1 migrations
 wrangler d1 migrations apply DB --env production
@@ -31,11 +31,28 @@ wrangler tail --env production
 ## GitHub Actions (Automated)
 
 ```yaml
+- run: npm run build
+- run: node scripts/sync-worker-secrets.mjs
 - uses: cloudflare/wrangler-action@v3
   with:
     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     command: deploy --env production
+- uses: cloudflare/pages-action@v1
+  with:
+    apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    projectName: devpilot-dashboard
+    directory: dist
+    gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+## Manual follow-up still required
+
+- Create the Cloudflare Pages project `devpilot-dashboard` before the first automated deploy (Cloudflare Dashboard → Workers & Pages → Create application → Pages → Direct Upload)
+- Manually maintain the Worker runtime secret `GITHUB_TOKEN` if server-side GitHub proxying is needed
+- Add any additional runtime secrets and bindings that are not derived from the two GitHub deployment secrets
+- Configure custom domains or routes in Cloudflare if production traffic should not use default `*.pages.dev` or worker subdomains
 
 ## Environment Configuration
 
