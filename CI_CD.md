@@ -18,7 +18,7 @@
 
 ## Overview
 
-The CI/CD pipeline uses **GitHub Actions** to automate linting, testing, building, and deploying to Cloudflare on every push and pull request.
+The CI/CD pipeline uses **GitHub Actions** to build and deploy the application to Cloudflare. The repository currently includes a production deployment workflow at `.github/workflows/deploy.yml` that uses the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` GitHub secrets to deploy both the Pages frontend and the Worker backend.
 
 ---
 
@@ -26,22 +26,18 @@ The CI/CD pipeline uses **GitHub Actions** to automate linting, testing, buildin
 
 ```mermaid
 graph LR
-    Push["Git Push"] --> CI["CI Workflow"]
-    CI --> Lint["Lint & Type Check"]
-    CI --> Test["Unit + Integration Tests"]
-    CI --> Build["Build"]
-    Lint --> Gate{All Pass?}
-    Test --> Gate
-    Build --> Gate
-    Gate -->|"PR"| Preview["Deploy Preview"]
-    Gate -->|"develop"| Staging["Deploy Staging"]
-    Gate -->|"main"| Migrate["Run DB Migrations"]
-    Migrate --> Production["Deploy Production"]
+    Push["Push to main"] --> Build["npm ci + npm run build"]
+    Dispatch["Manual workflow_dispatch"] --> Build
+    Build --> SecretSync["Sync CF_TOKEN + CF_ACCOUNT_ID to Worker"]
+    SecretSync --> Worker["Deploy Worker"]
+    Worker --> Pages["Deploy Pages"]
 ```
 
 ---
 
 ## Workflow Files
+
+This repository currently checks in `.github/workflows/deploy.yml`. Additional workflow snippets below should be treated as reference patterns unless a matching workflow file exists in the repository.
 
 ### CI Workflow (.github/workflows/ci.yml)
 
@@ -105,63 +101,20 @@ jobs:
 
 ---
 
-### Preview Deploy (.github/workflows/deploy-preview.yml)
+### Deployment Workflow (.github/workflows/deploy.yml)
 
 ```yaml
-name: Deploy Preview
-
-on:
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  deploy-preview:
-    name: Deploy Preview
-    runs-on: ubuntu-latest
-    needs: [lint, test, build]
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with: { name: dist, path: dist/ }
-      - uses: cloudflare/wrangler-action@v3
-        id: deploy-worker
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --env preview
-      - uses: cloudflare/wrangler-action@v3
-        id: deploy-pages
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy dist --project-name my-frontend
-      - uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🚀 Preview deployed: ${{ steps.deploy-pages.outputs.deployment-url }}`
-            })
-```
-
----
-
-### Production Deploy (.github/workflows/deploy-production.yml)
-
-```yaml
-name: Deploy Production
+name: Deploy DevPilot
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  deploy-production:
-    name: Deploy Production
+  build-and-deploy:
+    name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
-    environment: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -170,21 +123,22 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
-      - name: Apply DB Migrations
-        uses: cloudflare/wrangler-action@v3
+      - name: Sync Worker runtime Cloudflare secrets
+        run: |
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
+          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
+      - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: d1 migrations apply DB --env production
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
-      - name: Deploy Pages
-        uses: cloudflare/wrangler-action@v3
+      - uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy dist --project-name my-frontend --branch main
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: devpilot-dashboard
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ---
@@ -231,12 +185,11 @@ jobs:
 ## Build Commands Reference
 
 ```bash
-npm run lint          # ESLint + Prettier check
-npm run typecheck     # TypeScript type checking
-npm run test          # Run test suite
-npm run test:coverage # Tests with coverage report
-npm run build         # Production build (frontend + worker)
-npm run preview       # Preview production build locally
+npm run dev           # Vite development server
+npm run build         # Production frontend build
+npm run lint          # ESLint script configured in package.json
+npm run worker:dev    # Local Worker development with Wrangler
+npm run worker:deploy # Manual Worker deploy with Wrangler
 ```
 
 ---

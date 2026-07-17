@@ -18,7 +18,7 @@
 
 ## Overview
 
-Deployments are automated via GitHub Actions. Manual deployments using Wrangler CLI are documented for emergencies. All deployments require passing CI checks.
+Deployments are automated via GitHub Actions. The repository now deploys both the Cloudflare Pages frontend and the `devpilot-api` Worker backend from `.github/workflows/deploy.yml` using the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` GitHub secrets. Manual deployments using Wrangler CLI are documented for emergencies. All deployments require passing CI checks.
 
 ---
 
@@ -27,9 +27,7 @@ Deployments are automated via GitHub Actions. Manual deployments using Wrangler 
 | Environment | Branch | Trigger | URL |
 |---|---|---|---|
 | Local | Any | Manual | `localhost` |
-| Preview | PR branches | PR opened/updated | `*.pages.dev` |
-| Staging | `develop` | Push to develop | `staging.{domain}` |
-| Production | `main` | Push to main (after PR merge) | `{domain}` |
+| Production | `main` | Push to `main` or manual workflow dispatch | Cloudflare Pages project + Worker route |
 
 ---
 
@@ -42,18 +40,11 @@ sequenceDiagram
     participant CI as GitHub Actions
     participant CF as Cloudflare
 
-    Dev->>GH: Push to feature branch / Open PR
-    GH->>CI: Trigger CI workflow
-    CI->>CI: Lint + Type check
-    CI->>CI: Run unit tests
-    CI->>CI: Build frontend + worker
-    CI->>CF: Deploy to Preview (Pages + Worker)
-    CI-->>Dev: Preview URL posted to PR
-
-    Dev->>GH: Merge PR to main
-    GH->>CI: Trigger production workflow
-    CI->>CI: Full test suite
-    CI->>CF: Run D1 migrations (production)
+    Dev->>GH: Push to main or run workflow_dispatch
+    GH->>CI: Trigger deploy workflow
+    CI->>CI: npm ci
+    CI->>CI: npm run build
+    CI->>CF: Sync CF_TOKEN + CF_ACCOUNT_ID Worker secrets
     CI->>CF: Deploy Worker to production
     CI->>CF: Deploy Pages to production
     CI-->>Dev: Deployment complete notification
@@ -65,11 +56,10 @@ sequenceDiagram
 
 Before every production deployment:
 
-- [ ] All tests pass in CI
+- [ ] `npm run build` passes
 - [ ] Code reviewed and approved
-- [ ] Breaking changes documented in [CHANGELOG.md](CHANGELOG.md)
-- [ ] Database migrations tested in staging
-- [ ] Environment variables verified in Cloudflare Dashboard
+- [ ] `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are present in GitHub Secrets
+- [ ] Required manual Worker secrets are verified in Cloudflare
 - [ ] Rollback plan documented
 
 ---
@@ -78,31 +68,54 @@ Before every production deployment:
 
 See: [CI_CD.md](CI_CD.md)
 
-### Production Deploy (automated on merge to main)
+### Production Deploy (automated on push to `main` or manual dispatch)
 ```yaml
 # .github/workflows/deploy.yml (summarized)
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
-      - run: npm run test
       - run: npm run build
+      - name: Sync Worker runtime Cloudflare secrets
+        run: |
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
+          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: d1 migrations apply DB --env production
-      - uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
+      - uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: devpilot-dashboard
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+### What is automated now
+
+- Frontend build (`npm run build`)
+- Production Worker deployment for `devpilot-api`
+- Production Pages deployment for `devpilot-dashboard`
+- Sync of Worker runtime secrets `CF_TOKEN` and `CF_ACCOUNT_ID` from GitHub Actions secrets before backend deploy
+
+### Still requires manual setup
+
+- Create and keep the Cloudflare Pages project `devpilot-dashboard`
+- Create and keep the Cloudflare Worker target defined by `wrangler.toml`
+- Add the optional Worker secret `GITHUB_TOKEN` manually if the backend should proxy GitHub API requests server-side
+- Add any future runtime secrets that are not derived from `CLOUDFLARE_API_TOKEN` or `CLOUDFLARE_ACCOUNT_ID`
+- Configure custom domains, routes, and any Cloudflare product bindings not declared in this repository
 
 ---
 
@@ -119,7 +132,7 @@ wrangler d1 migrations apply DB --env production
 wrangler deploy --env production
 
 # 4. Deploy Pages
-wrangler pages deploy dist --project-name my-frontend --branch main
+wrangler pages deploy dist --project-name devpilot-dashboard --branch main
 ```
 
 ---
@@ -162,7 +175,7 @@ Cloudflare Workers supports zero-downtime deployment:
 
 ```bash
 # Check Worker health
-curl https://api.{domain}/health
+curl https://api.{domain}/api/health
 
 # Check database connectivity
 curl https://api.{domain}/health/db
