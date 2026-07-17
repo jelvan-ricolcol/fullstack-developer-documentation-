@@ -49,7 +49,7 @@ wrangler tail --env production
 
 ## Manual follow-up still required
 
-- Create the Cloudflare Pages project `devpilot-dashboard` before the first automated deploy
+- Create the Cloudflare Pages project `devpilot-dashboard` before the first automated deploy (Cloudflare Dashboard → Workers & Pages → Create application → Pages → Direct Upload)
 - Manually maintain the Worker runtime secret `GITHUB_TOKEN` if server-side GitHub proxying is needed
 - Add any additional runtime secrets and bindings that are not derived from the two GitHub deployment secrets
 - Configure custom domains or routes in Cloudflare if production traffic should not use default `*.pages.dev` or worker subdomains
