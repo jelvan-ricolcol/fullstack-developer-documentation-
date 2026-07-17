@@ -1,44 +1,43 @@
-# Versioning
+# API Versioning
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [API.md](../../API.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+API versioning strategy. See [API.md](../../API.md) for the full versioning policy.
 
-- The production purpose of **Versioning** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Strategy: URI Path Versioning
 
-## Source-aligned guidance
+```
+/api/v1/users    ← Current version
+/api/v2/users    ← New version (breaking change)
+```
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Version Policy
 
-## Implementation checklist
+- **Minor/patch changes** (new fields, new optional params): no version bump
+- **Breaking changes** (removed fields, changed types, removed endpoints): new version
+- **Deprecation period:** 6 months minimum with `Deprecation` response header
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Deprecation Headers
 
-## Documentation template for contributors
+```http
+HTTP/1.1 200 OK
+Deprecation: true
+Sunset: Sat, 01 Jan 2027 00:00:00 GMT
+Link: <https://api.{domain}/v2/users>; rel="successor-version"
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Migration Guide
 
-## Verified sources
+When a new version is released:
+1. Update [API.md](../../API.md) with new endpoints
+2. Update [CHANGELOG.md](../../CHANGELOG.md) with breaking changes
+3. Notify API consumers via response headers
+4. Keep old version running for deprecation period
+5. Remove old version after sunset date
 
-- OpenAPI Specification — https://spec.openapis.org/oas/latest.html
-- HTTP Semantics RFC 9110 — https://www.rfc-editor.org/rfc/rfc9110
-- GraphQL Specification — https://spec.graphql.org/
+## Verified Sources
 
+- API Versioning Best Practices — https://www.mnot.net/blog/2012/12/04/api-evolution
+- HTTP Deprecation Header (RFC 8594) — https://www.rfc-editor.org/rfc/rfc8594

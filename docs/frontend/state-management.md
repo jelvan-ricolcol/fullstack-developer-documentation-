@@ -1,44 +1,33 @@
-# State Management
+# Frontend State Management
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [STATE_MANAGEMENT.md](../../STATE_MANAGEMENT.md) | **Related:** [FRONTEND.md](../../FRONTEND.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Frontend state management patterns. See [STATE_MANAGEMENT.md](../../STATE_MANAGEMENT.md) for the full documentation.
 
-- The production purpose of **State Management** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Quick Reference
 
-## Source-aligned guidance
+| State Type | Tool |
+|---|---|
+| Server data | React Query (TanStack) |
+| Auth | Zustand |
+| UI (modals, etc.) | useState or Zustand |
+| Forms | React Hook Form + Zod |
+| URL | React Router params |
+| Preferences | Zustand + localStorage |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## React Query Key Conventions
 
-## Implementation checklist
+```typescript
+// Hierarchical keys enable targeted invalidation
+queryClient.invalidateQueries({ queryKey: ['users'] })           // All users
+queryClient.invalidateQueries({ queryKey: ['users', userId] })   // One user
+queryClient.setQueryData(['users', user.id], updatedUser)        // Optimistic update
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Verified Sources
 
-## Documentation template for contributors
-
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
-
-## Verified sources
-
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
-
+- TanStack Query Docs — https://tanstack.com/query/latest
+- Zustand Docs — https://docs.pmnd.rs/zustand/getting-started/introduction
+- React Hook Form — https://react-hook-form.com/

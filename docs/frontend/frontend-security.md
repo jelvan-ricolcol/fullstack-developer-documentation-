@@ -1,44 +1,61 @@
 # Frontend Security
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [FRONTEND.md](../../FRONTEND.md) | **Related:** [SECURITY.md](../../SECURITY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Frontend security practices. See [SECURITY.md](../../SECURITY.md) for the full security policy.
 
-- The production purpose of **Frontend Security** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## XSS Prevention
 
-## Source-aligned guidance
+React escapes all values in JSX by default. Never use `dangerouslySetInnerHTML` with untrusted content:
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+```tsx
+// ✅ Safe — React escapes this
+<p>{userInput}</p>
 
-## Implementation checklist
+// ❌ Dangerous — Never do this with untrusted data
+<div dangerouslySetInnerHTML={{ __html: userInput }} />
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+// ✅ If HTML rendering is required, sanitize first
+import DOMPurify from 'dompurify';
+<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />
+```
 
-## Documentation template for contributors
+## Token Storage
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+```typescript
+// ✅ Access token in memory only
+let accessToken: string | null = null;
 
-## Verified sources
+// ✅ Refresh token in HttpOnly cookie (set by server)
+// Cannot be accessed by JavaScript
 
-- OWASP Cheat Sheet Series — https://cheatsheetseries.owasp.org/
-- OWASP Top 10 — https://owasp.org/www-project-top-ten/
-- CISA Known Exploited Vulnerabilities — https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+// ❌ Never store tokens in localStorage
+localStorage.setItem('token', accessToken); // VULNERABLE
+```
 
+## CSRF Protection
+
+- Refresh tokens in SameSite=Strict cookies prevent CSRF
+- Custom header check: `X-Requested-With: XMLHttpRequest`
+- Origin validation on server
+
+## Content Security Policy
+
+Set by Cloudflare Workers response headers — not configurable from frontend. See [CLOUDFLARE.md](../../CLOUDFLARE.md).
+
+## Dependency Security
+
+```bash
+# Audit dependencies
+npm audit
+
+# Check for known vulnerabilities
+npx better-npm-audit audit
+```
+
+## Verified Sources
+
+- OWASP XSS — https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+- OWASP CSRF — https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html

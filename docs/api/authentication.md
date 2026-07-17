@@ -1,45 +1,55 @@
-# Authentication
+# API Authentication
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [AUTHENTICATION.md](../../AUTHENTICATION.md) | **Related:** [API.md](../../API.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+How to authenticate API requests. See [AUTHENTICATION.md](../../AUTHENTICATION.md) for the full auth implementation.
 
-- The production purpose of **Authentication** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## ******
 
-## Source-aligned guidance
+All protected endpoints require a JWT access token:
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+```http
+GET /api/v1/users/me HTTP/1.1
+Authorization: ******
+```
 
-## Implementation checklist
+## Obtaining a Token
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+```http
+POST /api/v1/auth/login HTTP/1.1
+Content-Type: application/json
 
-## Documentation template for contributors
+{ "email": "user@example.com", "password": "..." }
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+Response:
+```json
+{
+  "data": {
+    "accessToken": "eyJhbGci...",
+    "expiresIn": 900,
+    "tokenType": "Bearer"
+  }
+}
+```
 
-## Verified sources
+## Refreshing a Token
 
-- OAuth 2.0 RFC 6749 — https://www.rfc-editor.org/rfc/rfc6749
-- JWT RFC 7519 — https://www.rfc-editor.org/rfc/rfc7519
-- OWASP Authentication Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-- NIST Digital Identity Guidelines — https://pages.nist.gov/800-63-3/
+```http
+POST /api/v1/auth/refresh HTTP/1.1
+Cookie: refresh_token=...
+```
 
+## Token Expiry
+
+| Token | TTL |
+|---|---|
+| Access token | 15 minutes |
+| Refresh token | 7 days |
+
+## Verified Sources
+
+- RFC 6750 (****** — https://www.rfc-editor.org/rfc/rfc6750
+- RFC 7519 (JWT) — https://www.rfc-editor.org/rfc/rfc7519

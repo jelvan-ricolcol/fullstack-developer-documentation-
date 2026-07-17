@@ -1,44 +1,48 @@
 # Accessibility
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md) | [COMPONENT_LIBRARY.md](../../COMPONENT_LIBRARY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+All UI must meet WCAG 2.1 Level AA. Accessibility is not optional.
 
-- The production purpose of **Accessibility** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Requirements
 
-## Source-aligned guidance
+- All interactive elements must be keyboard-navigable
+- Color contrast ratio: 4.5:1 for normal text, 3:1 for large text
+- All images must have descriptive alt text (or `alt=""` if decorative)
+- All form fields must have associated labels
+- Focus must be visible at all times
+- Screen reader tested with NVDA (Windows) and VoiceOver (macOS/iOS)
+- No content flashes more than 3 times per second (seizure prevention)
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## ARIA Patterns
 
-## Implementation checklist
+```tsx
+// Button with icon only — must have label
+<button aria-label="Close modal">×</button>
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+// Loading state
+<button aria-busy={loading} disabled={loading}>
+  {loading ? 'Saving...' : 'Save'}
+</button>
 
-## Documentation template for contributors
+// Dialog
+<div role="dialog" aria-modal aria-labelledby="dialog-title">
+  <h2 id="dialog-title">Confirm Delete</h2>
+</div>
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Testing Tools
 
-## Verified sources
+- axe DevTools (browser extension)
+- Playwright `a11y` plugin for automated checks
+- Manual keyboard navigation testing
+- NVDA + Chrome for Windows
+- VoiceOver + Safari for macOS/iOS
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
+## Verified Sources
 
+- WCAG 2.1 — https://www.w3.org/TR/WCAG21/
+- ARIA Authoring Practices — https://www.w3.org/WAI/ARIA/apg/
+- axe Rules — https://dequeuniversity.com/rules/axe/

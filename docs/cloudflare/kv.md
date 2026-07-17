@@ -1,47 +1,55 @@
-# KV
+# Cloudflare KV
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [CLOUDFLARE.md](../../CLOUDFLARE.md) | **Related:** [STORAGE.md](../../STORAGE.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+KV is a globally-distributed, eventually-consistent key-value store.
 
-- The production purpose of **KV** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Key Facts
 
-## Source-aligned guidance
+| Property | Value |
+|---|---|
+| Consistency | Eventually consistent (≤60s globally) |
+| Max value size | 25MB |
+| Max key size | 512 bytes |
+| Read latency | < 1ms at edge |
+| Binding | `env.KV` |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Setup
 
-## Implementation checklist
+```toml
+[[kv_namespaces]]
+binding = "KV"
+id = "xxxx-xxxx-xxxx-xxxx"
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Operations
 
-## Documentation template for contributors
+```typescript
+// Write with TTL
+await env.KV.put(key, JSON.stringify(value), { expirationTtl: 3600 });
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+// Read
+const raw = await env.KV.get(key);
+const value = raw ? JSON.parse(raw) : null;
 
-## Verified sources
+// Delete
+await env.KV.delete(key);
 
-- Cloudflare Workers Docs — https://developers.cloudflare.com/workers/
-- Cloudflare D1 Docs — https://developers.cloudflare.com/d1/
-- Cloudflare R2 Docs — https://developers.cloudflare.com/r2/
+// List keys
+const list = await env.KV.list({ prefix: 'user:', limit: 100 });
+```
+
+## Limitations
+
+- **Not for counters** — eventual consistency means lost updates
+- **Not for transactions** — no atomic multi-key operations
+- **Not for large values** — max 25MB per value
+- Use D1 for transactional state
+
+See: [KNOWN_LIMITATIONS.md](../../KNOWN_LIMITATIONS.md)
+
+## Verified Sources
+
 - Cloudflare KV Docs — https://developers.cloudflare.com/kv/
-- Cloudflare Durable Objects Docs — https://developers.cloudflare.com/durable-objects/
-- Cloudflare Queues Docs — https://developers.cloudflare.com/queues/
-

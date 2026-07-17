@@ -1,45 +1,76 @@
-# JWT
+# JWT (JSON Web Tokens)
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [AUTHENTICATION.md](../../AUTHENTICATION.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+JWTs are used as access tokens for API authentication. See [AUTHENTICATION.md](../../AUTHENTICATION.md) for the full authentication flow.
 
-- The production purpose of **JWT** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Token Structure
 
-## Source-aligned guidance
+```
+HEADER.PAYLOAD.SIGNATURE
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+Header: { "alg": "HS256", "typ": "JWT" }
+Payload: {
+  "sub": "cuid2abc123",
+  "email": "user@example.com",
+  "role": "admin",
+  "iss": "https://api.{domain}",
+  "aud": "https://{domain}",
+  "iat": 1719600000,
+  "exp": 1719600900,
+  "jti": "unique-id"
+}
+```
 
-## Implementation checklist
+## Token TTL
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+| Token | TTL |
+|---|---|
+| Access token | 15 minutes |
+| Refresh token | 7 days |
 
-## Documentation template for contributors
+## Signing (HS256)
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+```typescript
+import { SignJWT } from 'jose';
 
-## Verified sources
+const accessToken = await new SignJWT({
+  sub: userId,
+  email: user.email,
+  role: user.role,
+})
+  .setProtectedHeader({ alg: 'HS256' })
+  .setIssuedAt()
+  .setIssuer(env.JWT_ISSUER)
+  .setAudience(env.JWT_AUDIENCE)
+  .setExpirationTime('15m')
+  .setJti(crypto.randomUUID())
+  .sign(new TextEncoder().encode(env.JWT_SECRET));
+```
 
-- OAuth 2.0 RFC 6749 — https://www.rfc-editor.org/rfc/rfc6749
-- JWT RFC 7519 — https://www.rfc-editor.org/rfc/rfc7519
-- OWASP Authentication Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-- NIST Digital Identity Guidelines — https://pages.nist.gov/800-63-3/
+## Verification
 
+```typescript
+import { jwtVerify } from 'jose';
+
+const { payload } = await jwtVerify(
+  token,
+  new TextEncoder().encode(env.JWT_SECRET),
+  { issuer: env.JWT_ISSUER, audience: env.JWT_AUDIENCE }
+);
+```
+
+## Security
+
+- Store access token in **memory only** (never localStorage)
+- Use HS256 with ≥256-bit secret, or RS256 for distributed verification
+- `jti` claim prevents token replay after revocation
+- Short TTL (15min) limits blast radius of token theft
+
+## Verified Sources
+
+- RFC 7519 (JWT) — https://www.rfc-editor.org/rfc/rfc7519
+- jose library — https://github.com/panva/jose
+- OWASP JWT Cheatsheet — https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html

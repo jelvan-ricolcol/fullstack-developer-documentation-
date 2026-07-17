@@ -1,44 +1,49 @@
-# Rest API
+# REST API Patterns
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [API.md](../../API.md) | **Related:** [BACKEND.md](../../BACKEND.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+REST API design patterns. See [API.md](../../API.md) for the full API contract.
 
-- The production purpose of **Rest API** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Resource Naming
 
-## Source-aligned guidance
+```
+/api/v1/users              → Collection
+/api/v1/users/:id          → Single resource
+/api/v1/users/:id/posts    → Sub-collection
+```
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## HTTP Methods
 
-## Implementation checklist
+| Method | Action | Idempotent |
+|---|---|---|
+| GET | Read | Yes |
+| POST | Create | No (use Idempotency-Key) |
+| PUT | Replace | Yes |
+| PATCH | Partial update | No |
+| DELETE | Remove | Yes |
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Response Codes
 
-## Documentation template for contributors
+See [API.md](../../API.md) for the full status code reference.
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Pagination Pattern
 
-## Verified sources
+```
+GET /api/v1/users?limit=20&cursor=next_cursor
+```
 
-- OpenAPI Specification — https://spec.openapis.org/oas/latest.html
-- HTTP Semantics RFC 9110 — https://www.rfc-editor.org/rfc/rfc9110
-- GraphQL Specification — https://spec.graphql.org/
+Response:
+```json
+{
+  "data": [...],
+  "pagination": { "cursor": "...", "hasMore": true, "limit": 20 }
+}
+```
 
+## Verified Sources
+
+- REST API Design — https://restfulapi.net/
+- HTTP/1.1 RFC 7231 — https://www.rfc-editor.org/rfc/rfc7231
+- API Design Patterns (Google) — https://cloud.google.com/apis/design

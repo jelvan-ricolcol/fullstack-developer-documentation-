@@ -1,43 +1,63 @@
-# Prompts
+# AI Prompt Library
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [AI_CONTEXT.md](../../AI_CONTEXT.md) | [AI_POLICY.md](../../AI_POLICY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+This directory contains reusable prompts for AI-assisted development tasks. Prompts are designed to produce production-ready, documentation-compliant output.
 
-- The production purpose of **Prompts** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## System Prompt (For AI Assistants)
 
-## Source-aligned guidance
+Use this as a system prompt when working on this repository:
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+```
+You are working on the jelvan-ricolcol/fullstack-developer-documentation- repository.
 
-## Implementation checklist
+Before making any changes:
+1. Read AI_CONTEXT.md for project state and architecture
+2. Check AI_REFERENCE.md for quick lookup
+3. Read KNOWN_LIMITATIONS.md to avoid hitting platform limits
+4. Follow CODING_STANDARDS.md for code conventions
+5. Update all affected documentation after any change
+6. Never commit secrets
+7. Always validate input with Zod
+8. Use parameterized D1 queries
+9. Check INDEX.md to find where to document your changes
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Task Prompts
 
-## Documentation template for contributors
+### Create a new API endpoint
+```
+Create a new REST endpoint at GET /api/v1/{resource}. 
+- Follow the patterns in BACKEND.md
+- Add auth middleware (authMiddleware)
+- Add authorization check (authorize function)
+- Validate query params with Zod
+- Add to API.md endpoint registry
+- Add to FEATURE_REGISTRY.md
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+### Add a database table
+```
+Add a new D1 table for {entity}.
+- Follow DATABASE.md schema conventions (snake_case, CUID2 ids, ISO timestamps)
+- Create migration file in migrations/
+- Add to DATA_DICTIONARY.md
+- Add repository class following BACKEND.md patterns
+```
 
-## Verified sources
+### Create a React component
+```
+Create a new React component {ComponentName}.
+- Follow COMPONENT_LIBRARY.md standards
+- Use DESIGN_SYSTEM.md tokens
+- Add ARIA attributes for accessibility
+- Write unit test with React Testing Library
+- Export from components/index.ts
+```
 
-- OpenAI API Docs — https://platform.openai.com/docs
-- OpenAI Safety Best Practices — https://platform.openai.com/docs/guides/safety-best-practices
+## Verified Sources
 
+- Anthropic Prompt Library — https://docs.anthropic.com/
+- OpenAI Prompt Engineering — https://platform.openai.com/docs/guides/prompt-engineering

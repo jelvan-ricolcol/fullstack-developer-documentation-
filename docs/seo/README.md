@@ -1,44 +1,55 @@
 # SEO
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [FRONTEND.md](../../FRONTEND.md) | [PERFORMANCE.md](../../PERFORMANCE.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+SEO considerations for the Cloudflare Pages + React SPA deployment.
 
-- The production purpose of **SEO** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## SPA SEO Challenge
 
-## Source-aligned guidance
+React SPAs are client-rendered. Search engines may not index client-rendered content reliably.
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+**Options:**
+1. **Prerendering** — Generate static HTML at build time (Vite SSG)
+2. **SSR via Workers** — Render React on the edge with Worker + Pages Functions
+3. **Static pages for landing** — Serve pre-rendered HTML for marketing pages
 
-## Implementation checklist
+## Meta Tags
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+```tsx
+// Use react-helmet-async or @tanstack/react-router meta
+<head>
+  <title>{pageTitle} | My App</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <link rel="canonical" href={canonicalUrl} />
+</head>
+```
 
-## Documentation template for contributors
+## Performance & SEO
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+Core Web Vitals directly affect Google ranking. Target:
+- LCP ≤ 2.5s
+- INP ≤ 200ms
+- CLS ≤ 0.1
 
-## Verified sources
+See [PERFORMANCE.md](../../PERFORMANCE.md).
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
+## robots.txt
 
+```
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Sitemap: https://{domain}/sitemap.xml
+```
+
+## Verified Sources
+
+- Google Search Central — https://developers.google.com/search
+- Web Vitals — https://web.dev/vitals/
+- Schema.org — https://schema.org/

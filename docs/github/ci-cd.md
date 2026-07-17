@@ -1,44 +1,49 @@
-# CI CD
+# CI/CD (GitHub Actions)
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [CI_CD.md](../../CI_CD.md) | **Related:** [DEPLOYMENT.md](../../DEPLOYMENT.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+GitHub Actions CI/CD pipeline. See [CI_CD.md](../../CI_CD.md) for full workflow YAML and configuration.
 
-- The production purpose of **CI CD** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Workflows
 
-## Source-aligned guidance
+| Workflow | File | Trigger |
+|---|---|---|
+| CI | `.github/workflows/ci.yml` | Push, PR |
+| Deploy Preview | `.github/workflows/deploy-preview.yml` | PR opened/updated |
+| Deploy Staging | `.github/workflows/deploy-staging.yml` | Push to develop |
+| Deploy Production | `.github/workflows/deploy-production.yml` | Push to main |
+| CodeQL | `.github/workflows/codeql.yml` | Push + weekly |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Secrets Required
 
-## Implementation checklist
+| Secret | Purpose |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Deploy Workers and Pages |
+| `CLOUDFLARE_ACCOUNT_ID` | CF account identifier |
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Required Status Checks
 
-## Documentation template for contributors
+All PRs to `main` must pass:
+1. `Lint & Type Check`
+2. `Unit & Integration Tests`
+3. `Build`
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Actions Pinning
 
-## Verified sources
+All third-party Actions are pinned to a specific commit SHA to prevent supply chain attacks:
 
-- GitHub Docs — https://docs.github.com/
+```yaml
+# ✅ Pinned
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+# ❌ Not pinned
+- uses: actions/checkout@v4
+```
+
+## Verified Sources
+
 - GitHub Actions Docs — https://docs.github.com/actions
-- GitHub Actions security — https://docs.github.com/actions/security-for-github-actions
-
+- GitHub Actions Security — https://docs.github.com/actions/security-for-github-actions
+- Wrangler Action — https://github.com/cloudflare/wrangler-action

@@ -1,45 +1,32 @@
 # Access Control
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [AUTHORIZATION.md](../../AUTHORIZATION.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Access control policies defining what each role can access. See [AUTHORIZATION.md](../../AUTHORIZATION.md) for the full RBAC model.
 
-- The production purpose of **Access Control** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Access Control Principles
 
-## Source-aligned guidance
+1. **Deny by default** — No access unless explicitly granted
+2. **Least privilege** — Users get minimum permissions needed
+3. **Fail securely** — Errors result in access denied, not access granted
+4. **Complete mediation** — Every request is checked, no bypass paths
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Route-Level Access
 
-## Implementation checklist
+```typescript
+// Define access required for each route
+const routes = {
+  'GET /api/v1/users':       { resource: 'users', action: 'list' },
+  'POST /api/v1/users':      { resource: 'users', action: 'create' },
+  'GET /api/v1/users/:id':   { resource: 'users', action: 'read' },
+  'PATCH /api/v1/users/:id': { resource: 'users', action: 'update' },
+  'DELETE /api/v1/users/:id':{ resource: 'users', action: 'delete' },
+};
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Verified Sources
 
-## Documentation template for contributors
-
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
-
-## Verified sources
-
-- OAuth 2.0 RFC 6749 — https://www.rfc-editor.org/rfc/rfc6749
-- JWT RFC 7519 — https://www.rfc-editor.org/rfc/rfc7519
-- OWASP Authentication Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-- NIST Digital Identity Guidelines — https://pages.nist.gov/800-63-3/
-
+- OWASP Access Control — https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html
+- NIST RBAC Standard — https://csrc.nist.gov/projects/role-based-access-control

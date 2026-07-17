@@ -1,46 +1,44 @@
-# Serverless
+# Serverless Patterns
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [BACKEND.md](../../BACKEND.md) | **Related:** [CLOUDFLARE.md](../../CLOUDFLARE.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Serverless principles applied to Cloudflare Workers.
 
-- The production purpose of **Serverless** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Key Differences from Traditional Server
 
-## Source-aligned guidance
+| Traditional Server | Cloudflare Workers |
+|---|---|
+| Node.js process | V8 isolate |
+| Long-lived | Request-scoped |
+| `process.env` | `env` bindings |
+| TCP connections | Worker bindings |
+| `fs` module | R2/KV bindings |
+| Horizontal scaling | Automatic edge scaling |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Stateless Request Handling
 
-## Implementation checklist
+Workers are stateless per request. State lives in:
+- D1 (structured data)
+- R2 (files)
+- KV (cache/sessions)
+- Durable Objects (realtime state)
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Background Work
 
-## Documentation template for contributors
+```typescript
+// ctx.waitUntil — run after response is sent
+ctx.waitUntil(
+  auditLog(env.DB, { userId, action: 'users:create' })
+);
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Cold Start
 
-## Verified sources
+Workers use V8 isolates — cold start is near-zero (~0ms). New isolates are created on new requests but V8 isolates are reused aggressively.
 
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
+## Verified Sources
+
+- Cloudflare Workers Docs — https://developers.cloudflare.com/workers/
 - The Twelve-Factor App — https://12factor.net/
-

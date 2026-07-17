@@ -1,45 +1,41 @@
-# Cloud Services
+# AWS Cloud Services
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [CLOUDFLARE.md](../../CLOUDFLARE.md) | [DEPLOYMENT.md](../../DEPLOYMENT.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+AWS services used as optional components alongside Cloudflare.
 
-- The production purpose of **Cloud Services** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Services Reference
 
-## Source-aligned guidance
+| Service | CF Equivalent | Use When |
+|---|---|---|
+| Lambda | Workers | Node.js-specific code, longer CPU |
+| S3 | R2 | Existing AWS ecosystem, S3 SDK |
+| SES | Resend | High-volume email, existing AWS account |
+| CloudFront | Cloudflare CDN | AWS-native deployments |
+| RDS/Aurora | Hyperdrive + PostgreSQL | Advanced SQL features |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Email via SES
 
-## Implementation checklist
+```typescript
+// Using SES for transactional email
+const response = await fetch(`https://email.${region}.amazonaws.com/v2/email/outbound-emails`, {
+  method: 'POST',
+  headers: {
+    'X-Amz-Date': amzDate,
+    Authorization: awsSignature,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    FromEmailAddress: env.EMAIL_FROM,
+    Destination: { ToAddresses: [to] },
+    Content: { Simple: { Subject: { Data: subject }, Body: { Html: { Data: html } } } },
+  }),
+});
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
-
-## Documentation template for contributors
-
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
-
-## Verified sources
+## Verified Sources
 
 - AWS Documentation — https://docs.aws.amazon.com/
-- Amazon S3 User Guide — https://docs.aws.amazon.com/AmazonS3/latest/userguide/
-- AWS Lambda Developer Guide — https://docs.aws.amazon.com/lambda/latest/dg/
-- Amazon SES Developer Guide — https://docs.aws.amazon.com/ses/latest/dg/
-
+- AWS SES Docs — https://docs.aws.amazon.com/ses/

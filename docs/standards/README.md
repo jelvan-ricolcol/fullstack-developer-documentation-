@@ -1,46 +1,35 @@
 # Standards
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [CODING_STANDARDS.md](../../CODING_STANDARDS.md) | [STYLE_GUIDE.md](../../STYLE_GUIDE.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+This document provides pointers to coding and documentation standards. See the root-level documents for full standards.
 
-- The production purpose of **Standards** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Standards Documents
 
-## Source-aligned guidance
+| Standard | Document |
+|---|---|
+| Code conventions | [CODING_STANDARDS.md](../../CODING_STANDARDS.md) |
+| Documentation style | [STYLE_GUIDE.md](../../STYLE_GUIDE.md) |
+| API standards | [API.md](../../API.md) |
+| Security standards | [SECURITY.md](../../SECURITY.md) |
+| Git conventions | [GITHUB.md](../../GITHUB.md) |
+| Testing standards | [TESTING.md](../../TESTING.md) |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Key Standards Summary
 
-## Implementation checklist
+- TypeScript strict mode enabled everywhere
+- Zod validation at all API trust boundaries
+- Conventional Commits for all git commits
+- Parameterized queries for all D1 operations
+- OWASP Top 10 applied by default
+- WCAG 2.1 AA for all UI
+- Semantic versioning for releases
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Verified Sources
 
-## Documentation template for contributors
-
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
-
-## Verified sources
-
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
-
+- ECMAScript Specification — https://tc39.es/ecma262/
+- TypeScript Docs — https://www.typescriptlang.org/docs/
+- Conventional Commits — https://www.conventionalcommits.org/
+- Semantic Versioning — https://semver.org/

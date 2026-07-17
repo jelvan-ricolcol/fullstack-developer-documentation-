@@ -1,44 +1,43 @@
 # API Design
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [API.md](../../API.md) | **Related:** [BACKEND.md](../../BACKEND.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+API design principles for the backend. See [API.md](../../API.md) for the full API documentation.
 
-- The production purpose of **API Design** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Route Handler Structure
 
-## Source-aligned guidance
+```typescript
+// routes/users.ts
+import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+const users = new Hono<{ Bindings: Env }>();
 
-## Implementation checklist
+users.get('/', authorize('users', 'list'), async (c) => {
+  const { limit, cursor } = PaginationSchema.parse(c.req.query());
+  const service = new UserService(new UserRepository(c.env.DB), c.env.KV);
+  const result = await service.listUsers({ limit, cursor });
+  return c.json({ data: result.users, pagination: result.pagination });
+});
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+users.post(
+  '/',
+  authorize('users', 'create'),
+  zValidator('json', CreateUserSchema),
+  async (c) => {
+    const data = c.req.valid('json');
+    const service = new UserService(new UserRepository(c.env.DB), c.env.KV);
+    const user = await service.createUser(data);
+    return c.json({ data: user }, 201);
+  }
+);
 
-## Documentation template for contributors
+export { users as usersRouter };
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Verified Sources
 
-## Verified sources
-
-- OpenAPI Specification — https://spec.openapis.org/oas/latest.html
-- HTTP Semantics RFC 9110 — https://www.rfc-editor.org/rfc/rfc9110
-- GraphQL Specification — https://spec.graphql.org/
-
+- Hono Framework — https://hono.dev/
+- REST API Design — https://restfulapi.net/
