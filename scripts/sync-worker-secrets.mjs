@@ -1,7 +1,4 @@
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 
 const { CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID } = process.env;
 
@@ -13,24 +10,13 @@ if (!CLOUDFLARE_ACCOUNT_ID) {
   throw new Error('Missing CLOUDFLARE_ACCOUNT_ID');
 }
 
-const tempDir = await mkdtemp(join(tmpdir(), 'devpilot-worker-secrets-'));
-const secretsFile = join(tempDir, 'worker-secrets.json');
-
-try {
-  await writeFile(
-    secretsFile,
-    JSON.stringify({
-      CF_TOKEN: CLOUDFLARE_API_TOKEN,
-      CF_ACCOUNT_ID: CLOUDFLARE_ACCOUNT_ID,
-    }),
-    { mode: 0o600 }
-  );
-
+function syncSecret(name, value) {
   const result = spawnSync(
     'npx',
-    ['wrangler', 'secret', 'bulk', secretsFile, '--env', 'production'],
+    ['wrangler', 'secret', 'put', name, '--env', 'production'],
     {
-      stdio: 'inherit',
+      input: value,
+      stdio: ['pipe', 'inherit', 'inherit'],
       env: process.env,
     }
   );
@@ -42,6 +28,7 @@ try {
   if (result.error) {
     throw result.error;
   }
-} finally {
-  await rm(tempDir, { recursive: true, force: true });
 }
+
+syncSecret('CF_TOKEN', CLOUDFLARE_API_TOKEN);
+syncSecret('CF_ACCOUNT_ID', CLOUDFLARE_ACCOUNT_ID);
