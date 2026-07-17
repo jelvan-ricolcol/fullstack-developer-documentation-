@@ -43,6 +43,7 @@ This INDEX.md serves as the single source of truth for all documentation in this
 | 🛡️ Authorization | [AUTHORIZATION.md](AUTHORIZATION.md) | RBAC, permissions, access control |
 | 🔑 Env Variables | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) | All environment variables documented |
 | 🚀 Deployment | [DEPLOYMENT.md](DEPLOYMENT.md) | Deployment procedures and runbooks |
+| 🖼️ UI Resources | [UI_RESOURCES.md](UI_RESOURCES.md) | UI assets, probing, email HTML, and delivery guidance |
 | ☁️ Cloudflare | [CLOUDFLARE.md](CLOUDFLARE.md) | Cloudflare services and configuration |
 | 🐙 GitHub | [GITHUB.md](GITHUB.md) | GitHub workflows, branch rules, governance |
 | 🔄 CI/CD | [CI_CD.md](CI_CD.md) | CI/CD pipeline documentation |

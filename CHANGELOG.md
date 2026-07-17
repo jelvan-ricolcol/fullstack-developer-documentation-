@@ -15,6 +15,7 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Feature: Magic link authentication (planned, AUTH-006)
 - Feature: TOTP MFA (planned, AUTH-007)
 - Feature: Sentry error tracking integration (planned, OPS-006)
+- UI_RESOURCES.md — UI design resources, AI probing, email HTML, serverless, and automation guide
 
 ---
 

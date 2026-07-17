@@ -25,6 +25,7 @@
 | 🔒 Security | [SECURITY.md](SECURITY.md) |
 | 🧪 Testing | [TESTING.md](TESTING.md) |
 | 🚀 Deployment | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| 🖼️ UI Resources | [UI_RESOURCES.md](UI_RESOURCES.md) |
 | 🤖 AI Context | [AI_CONTEXT.md](AI_CONTEXT.md) |
 | 📚 AI Reference | [AI_REFERENCE.md](AI_REFERENCE.md) |
 

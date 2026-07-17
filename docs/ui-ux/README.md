@@ -1,10 +1,14 @@
 # UI/UX Guidelines
 
-> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md) | [COMPONENT_LIBRARY.md](../../COMPONENT_LIBRARY.md)
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [UI_RESOURCES.md](../../UI_RESOURCES.md) | [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md) | [COMPONENT_LIBRARY.md](../../COMPONENT_LIBRARY.md)
 
 ## Overview
 
 UI/UX principles for building consistent, user-friendly interfaces.
+
+## Resource Hub
+
+For curated SVG, font, illustration, cross-device, email HTML, serverless, and automation design guidance, use [UI_RESOURCES.md](../../UI_RESOURCES.md) as the canonical starting point.
 
 ## Design Principles
 
