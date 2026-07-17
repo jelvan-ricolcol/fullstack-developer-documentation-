@@ -85,7 +85,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Sync Worker runtime Cloudflare secrets
-        run: sync `CF_TOKEN` and `CF_ACCOUNT_ID` from GitHub Secrets to Worker runtime secrets
+        run: |
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
+          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
