@@ -21,7 +21,7 @@ function syncSecret(name, value) {
     }
   );
 
-  if (typeof result.status === 'number' && result.status !== 0) {
+  if (result.status !== 0) {
     process.exit(result.status);
   }
 

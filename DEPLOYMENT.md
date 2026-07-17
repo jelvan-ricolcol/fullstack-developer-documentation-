@@ -176,7 +176,7 @@ Cloudflare Workers supports zero-downtime deployment:
 curl https://{worker-domain}/api/health
 
 # Check database connectivity
-curl https://api.{domain}/health/db
+curl https://{worker-domain}/health/db
 
 # Tail Worker logs
 wrangler tail --env production
