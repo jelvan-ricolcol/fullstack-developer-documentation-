@@ -155,7 +155,7 @@ Use these probing questions before generating UI, backend, or deployment plans.
 
 ---
 
-## HTML Email Design Creator Option
+## HTML Email Design Guidelines
 
 HTML email support is required whenever the product sends onboarding, verification, alerting, billing, or lifecycle messaging.
 
