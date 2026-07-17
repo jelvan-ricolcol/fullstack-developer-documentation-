@@ -32,6 +32,7 @@ This INDEX.md serves as the single source of truth for all documentation in this
 | Category | Document | Purpose |
 |---|---|---|
 | 🏠 Root | [README.md](README.md) | Repository overview and onboarding |
+| 📚 Unified | [fullstack-jel.md](fullstack-jel.md) | Complete concatenated documentation in one file |
 | 🗺️ Navigation | **INDEX.md** *(this file)* | Documentation map |
 | 🏛️ Architecture | [ARCHITECTURE.md](ARCHITECTURE.md) | System architecture overview |
 | 🏗️ System Design | [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) | Detailed system design decisions |
