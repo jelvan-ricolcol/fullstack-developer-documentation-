@@ -86,8 +86,9 @@ jobs:
       - run: npm run build
       - name: Sync Worker runtime Cloudflare secrets
         run: |
-          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
-          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
+          node -e "const fs=require('node:fs'); fs.writeFileSync('/tmp/devpilot-worker-secrets.json', JSON.stringify({ CF_TOKEN: process.env.CLOUDFLARE_API_TOKEN, CF_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID }))"
+          npx wrangler secret bulk /tmp/devpilot-worker-secrets.json --env production
+          rm -f /tmp/devpilot-worker-secrets.json
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -111,9 +112,9 @@ jobs:
 
 ### Still requires manual setup
 
-- Create and keep the Cloudflare Pages project `devpilot-dashboard`
-- Create and keep the Cloudflare Worker target defined by `wrangler.toml`
-- Add the optional Worker secret `GITHUB_TOKEN` manually if the backend should proxy GitHub API requests server-side
+- Create and maintain the Cloudflare Pages project `devpilot-dashboard`
+- Ensure the Cloudflare Worker target defined by `wrangler.toml` exists and remains configured correctly
+- Manually maintain the optional Worker secret `GITHUB_TOKEN` if the backend should proxy GitHub API requests server-side
 - Add any future runtime secrets that are not derived from `CLOUDFLARE_API_TOKEN` or `CLOUDFLARE_ACCOUNT_ID`
 - Configure custom domains, routes, and any Cloudflare product bindings not declared in this repository
 

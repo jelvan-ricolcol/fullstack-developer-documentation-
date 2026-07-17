@@ -33,8 +33,9 @@ wrangler tail --env production
 ```yaml
 - run: npm run build
 - run: |
-    printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
-    printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
+    node -e "const fs=require('node:fs'); fs.writeFileSync('/tmp/devpilot-worker-secrets.json', JSON.stringify({ CF_TOKEN: process.env.CLOUDFLARE_API_TOKEN, CF_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID }))"
+    npx wrangler secret bulk /tmp/devpilot-worker-secrets.json --env production
+    rm -f /tmp/devpilot-worker-secrets.json
 - uses: cloudflare/wrangler-action@v3
   with:
     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -52,7 +53,7 @@ wrangler tail --env production
 ## Manual follow-up still required
 
 - Create the Cloudflare Pages project `devpilot-dashboard` before the first automated deploy
-- Keep the Worker runtime secret `GITHUB_TOKEN` manual if server-side GitHub proxying is needed
+- Manually maintain the Worker runtime secret `GITHUB_TOKEN` if server-side GitHub proxying is needed
 - Add any additional runtime secrets and bindings that are not derived from the two GitHub deployment secrets
 - Configure custom domains or routes in Cloudflare if production traffic should not use default `*.pages.dev` or worker subdomains
 

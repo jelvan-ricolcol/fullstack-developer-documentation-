@@ -118,7 +118,7 @@ This document catalogs every environment variable used across frontend, backend,
 | `STAGING_D1_DATABASE_ID` | GitHub Variable | D1 DB ID for staging |
 | `PRODUCTION_D1_DATABASE_ID` | GitHub Variable | D1 DB ID for production |
 
-The current `.github/workflows/deploy.yml` also copies `CLOUDFLARE_API_TOKEN` into the Worker secret `CF_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` into the Worker secret `CF_ACCOUNT_ID` before deploying the backend.
+The current `.github/workflows/deploy.yml` also syncs `CLOUDFLARE_API_TOKEN` into the Worker secret `CF_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` into the Worker secret `CF_ACCOUNT_ID` before deploying the backend.
 
 ---
 

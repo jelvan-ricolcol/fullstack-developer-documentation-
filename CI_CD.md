@@ -125,8 +125,9 @@ jobs:
       - run: npm run build
       - name: Sync Worker runtime Cloudflare secrets
         run: |
-          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler secret put CF_TOKEN --env production
-          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx wrangler secret put CF_ACCOUNT_ID --env production
+          node -e "const fs=require('node:fs'); fs.writeFileSync('/tmp/devpilot-worker-secrets.json', JSON.stringify({ CF_TOKEN: process.env.CLOUDFLARE_API_TOKEN, CF_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID }))"
+          npx wrangler secret bulk /tmp/devpilot-worker-secrets.json --env production
+          rm -f /tmp/devpilot-worker-secrets.json
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
