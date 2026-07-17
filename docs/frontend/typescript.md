@@ -1,44 +1,76 @@
-# Typescript
+# TypeScript Standards
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [FRONTEND.md](../../FRONTEND.md) | **Related:** [CODING_STANDARDS.md](../../CODING_STANDARDS.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+TypeScript conventions for this project. See [CODING_STANDARDS.md](../../CODING_STANDARDS.md) for general coding standards.
 
-- The production purpose of **Typescript** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## tsconfig.json
 
-## Source-aligned guidance
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "paths": { "@/*": ["./src/*"] }
+  }
+}
+```
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Type Patterns
 
-## Implementation checklist
+```typescript
+// Prefer interface for object shapes
+interface User {
+  id: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
+}
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+// Use type for unions and computed types
+type UserRole = 'admin' | 'editor' | 'viewer';
+type PartialUser = Partial<Pick<User, 'name' | 'email'>>;
 
-## Documentation template for contributors
+// Avoid `any` — use `unknown` + type narrowing
+function processData(data: unknown): string {
+  if (typeof data !== 'string') throw new TypeError('Expected string');
+  return data.toUpperCase();
+}
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+// Use `satisfies` for config validation
+const config = {
+  apiUrl: 'https://api.example.com',
+  timeout: 5000,
+} satisfies AppConfig;
+```
 
-## Verified sources
+## React + TypeScript
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
+```tsx
+// Typed props
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary';
+  loading?: boolean;
+}
 
+// Generic components
+function List<T extends { id: string }>({ items, renderItem }: {
+  items: T[];
+  renderItem: (item: T) => React.ReactNode;
+}) {
+  return <ul>{items.map(item => <li key={item.id}>{renderItem(item)}</li>)}</ul>;
+}
+```
+
+## Verified Sources
+
+- TypeScript Docs — https://www.typescriptlang.org/docs/
+- React TypeScript Guide — https://react-typescript-cheatsheet.netlify.app/

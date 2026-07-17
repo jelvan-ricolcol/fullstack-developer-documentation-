@@ -1,44 +1,48 @@
 # Repository Standard
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [GITHUB.md](../../GITHUB.md) | **Related:** [CONTRIBUTING.md](../../CONTRIBUTING.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Repository configuration and governance standards. See [GITHUB.md](../../GITHUB.md) for full governance documentation.
 
-- The production purpose of **Repository Standard** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Required Files
 
-## Source-aligned guidance
+| File | Purpose |
+|---|---|
+| `README.md` | Repository overview |
+| `INDEX.md` | Documentation map |
+| `LICENSE` | License declaration |
+| `CODE_OF_CONDUCT.md` | Community standards |
+| `CONTRIBUTING.md` | Contribution guidelines |
+| `SECURITY.md` | Security policy |
+| `.github/CODEOWNERS` | Review ownership |
+| `.github/dependabot.yml` | Dependency updates |
+| `.gitignore` | Excluded files |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Branch Protection (main)
 
-## Implementation checklist
+- Require PR before merging
+- Require 1 approving review
+- Require CODEOWNER review
+- Require status checks (lint, test, build)
+- Require branch up-to-date
+- No force pushes
+- No direct deletions
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Repository Settings
 
-## Documentation template for contributors
+- **Visibility:** Public (documentation) / Private (app code)
+- **Default branch:** `main`
+- **Issues:** Enabled
+- **Discussions:** Enabled (for Q&A and announcements)
+- **Projects:** Enabled
+- **Wiki:** Disabled (use docs/ instead)
+- **Squash merge:** Enabled
+- **Merge commits:** Disabled
+- **Rebase merge:** Enabled
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Verified Sources
 
-## Verified sources
-
-- GitHub Docs — https://docs.github.com/
-- GitHub Actions Docs — https://docs.github.com/actions
-- GitHub Actions security — https://docs.github.com/actions/security-for-github-actions
-
+- GitHub Repository Docs — https://docs.github.com/repositories
+- GitHub Branch Protection — https://docs.github.com/repositories/configuring-branches-and-merges

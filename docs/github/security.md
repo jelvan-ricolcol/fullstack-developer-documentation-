@@ -1,44 +1,60 @@
-# Security
+# GitHub Security Settings
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [GITHUB.md](../../GITHUB.md) | **Related:** [SECURITY.md](../../SECURITY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+GitHub security configuration for this repository. See [SECURITY.md](../../SECURITY.md) for the full security policy.
 
-- The production purpose of **Security** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Enabled Security Features
 
-## Source-aligned guidance
+| Feature | Status | Purpose |
+|---|---|---|
+| Secret scanning | ✅ Enabled | Detect secrets committed to code |
+| Push protection | ✅ Enabled | Block commits with secrets |
+| Dependency review | ✅ Enabled | Review dep changes in PRs |
+| Dependabot alerts | ✅ Enabled | Notify on vulnerable deps |
+| Dependabot security updates | ✅ Enabled | Auto-PR for security patches |
+| CodeQL (JavaScript) | ✅ Enabled | SAST scanning |
+| GHAS (if available) | Optional | Advanced security features |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Secret Scanning
 
-## Implementation checklist
+GitHub automatically scans all commits for known secret patterns (API keys, tokens, etc.).
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+Push protection prevents secrets from being pushed:
+- Blocks push immediately
+- Developer must remove secret before pushing
+- Contact owner if legitimate false positive
 
-## Documentation template for contributors
+## Dependabot Configuration
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+```yaml
+# .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      dev-dependencies:
+        patterns: ["*"]
+        dependency-type: "development"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+```
 
-## Verified sources
+## Security Reporting
 
-- GitHub Docs — https://docs.github.com/
-- GitHub Actions Docs — https://docs.github.com/actions
-- GitHub Actions security — https://docs.github.com/actions/security-for-github-actions
+Report vulnerabilities via GitHub Security Advisories — not public issues.
 
+URL: `https://github.com/jelvan-ricolcol/fullstack-developer-documentation-/security/advisories/new`
+
+## Verified Sources
+
+- GitHub Security Docs — https://docs.github.com/code-security
+- Secret Scanning — https://docs.github.com/code-security/secret-scanning
+- Dependabot — https://docs.github.com/code-security/dependabot

@@ -1,46 +1,52 @@
 # Logging
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [OBSERVABILITY.md](../../OBSERVABILITY.md) | **Related:** [MONITORING.md](../../MONITORING.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Logging standards for Cloudflare Workers. All log output is structured JSON.
 
-- The production purpose of **Logging** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Log Format
 
-## Source-aligned guidance
+```typescript
+interface LogEntry {
+  timestamp: string;   // ISO 8601
+  level: 'debug' | 'info' | 'warn' | 'error';
+  message: string;
+  requestId?: string;
+  userId?: string;
+  method?: string;
+  path?: string;
+  status?: number;
+  durationMs?: number;
+  error?: { code: string; message: string; stack?: string };
+}
+```
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Usage
 
-## Implementation checklist
+```typescript
+import { log } from '../lib/logger';
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+log({ level: 'info', message: 'User created', userId, requestId });
+log({ level: 'error', message: 'DB query failed', error: { code: 'DB_ERROR', message: err.message } });
+```
 
-## Documentation template for contributors
+## Log Levels by Environment
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+| Level | Local | Staging | Production |
+|---|---|---|---|
+| debug | ✅ | ❌ | ❌ |
+| info | ✅ | ✅ | ✅ |
+| warn | ✅ | ✅ | ✅ |
+| error | ✅ | ✅ | ✅ |
 
-## Verified sources
+## Shipping Logs
 
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
+- Local: `console.log` output
+- Staging/Production: Cloudflare Logpush → R2 or external SIEM
 
+## Verified Sources
+
+- Cloudflare Workers Logging — https://developers.cloudflare.com/workers/observability/logs/
+- Cloudflare Logpush — https://developers.cloudflare.com/logs/

@@ -1,44 +1,58 @@
-# Graphql
+# GraphQL
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [BACKEND.md](../../BACKEND.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+GraphQL is an optional API layer. The primary API is REST (see [API.md](../../API.md)).
+GraphQL may be considered for complex query requirements in future versions.
 
-- The production purpose of **Graphql** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## When to Use GraphQL
 
-## Source-aligned guidance
+- Complex nested data requirements with many joins
+- Clients needing very different subsets of data
+- Real-time subscriptions (via WebSocket)
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Workers + GraphQL
 
-## Implementation checklist
+GraphQL can run in Cloudflare Workers using lightweight libraries:
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+```typescript
+import { createSchema, createYoga } from 'graphql-yoga';
 
-## Documentation template for contributors
+const schema = createSchema({
+  typeDefs: `
+    type User {
+      id: ID!
+      email: String!
+      name: String!
+    }
+    type Query {
+      user(id: ID!): User
+    }
+  `,
+  resolvers: {
+    Query: {
+      user: async (_, { id }, { env }) => {
+        return env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(id).first();
+      },
+    },
+  },
+});
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+const yoga = createYoga({ schema });
+export default { fetch: yoga.fetch };
+```
 
-## Verified sources
+## Security Considerations
 
-- OpenAPI Specification — https://spec.openapis.org/oas/latest.html
-- HTTP Semantics RFC 9110 — https://www.rfc-editor.org/rfc/rfc9110
-- GraphQL Specification — https://spec.graphql.org/
+- Depth limiting to prevent deeply nested queries
+- Complexity analysis to prevent expensive queries
+- Authentication required on all resolvers
+- Input validation on all arguments
 
+## Verified Sources
+
+- GraphQL Spec — https://spec.graphql.org/
+- GraphQL Yoga — https://the-guild.dev/graphql/yoga-server
+- OWASP GraphQL — https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html

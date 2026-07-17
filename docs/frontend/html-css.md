@@ -1,44 +1,56 @@
-# HTML CSS
+# HTML & CSS Standards
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [FRONTEND.md](../../FRONTEND.md) | **Related:** [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## HTML Standards
 
-## What this covers
+- Use semantic HTML elements (`<nav>`, `<main>`, `<article>`, `<section>`, etc.)
+- All images require `alt` attribute
+- All form inputs require `<label>` with `for` attribute
+- Use `<button>` for interactive elements, not `<div onClick>`
+- Use `lang` attribute on `<html>` element
 
-- The production purpose of **HTML CSS** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## CSS Standards
 
-## Source-aligned guidance
+This project uses **Tailwind CSS** for styling.
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+```tsx
+// ✅ Tailwind utility classes
+<button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md">
+  Save
+</button>
 
-## Implementation checklist
+// Use cn() utility for conditional classes
+import { cn } from '@/lib/utils';
+<div className={cn('base-class', { 'conditional-class': isActive })}>
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## CSS Modules (for complex components)
 
-## Documentation template for contributors
+```tsx
+// Button.module.css
+.button { /* ... */ }
+.button--primary { /* ... */ }
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+// Button.tsx
+import styles from './Button.module.css';
+<button className={cn(styles.button, styles['button--primary'])}>
+```
 
-## Verified sources
+## Responsive Design
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
+Mobile-first approach with Tailwind breakpoints:
+```
+sm: 640px   → Tablet portrait
+md: 768px   → Tablet landscape
+lg: 1024px  → Desktop
+xl: 1280px  → Large desktop
+2xl: 1536px → Extra large
+```
+
+## Verified Sources
+
+- MDN HTML — https://developer.mozilla.org/en-US/docs/Web/HTML
+- MDN CSS — https://developer.mozilla.org/en-US/docs/Web/CSS
+- Tailwind CSS — https://tailwindcss.com/docs/
 - WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
-

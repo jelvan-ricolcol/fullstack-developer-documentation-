@@ -1,44 +1,63 @@
-# React
+# React Patterns
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [FRONTEND.md](../../FRONTEND.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+React patterns used in this project.
 
-- The production purpose of **React** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Component Patterns
 
-## Source-aligned guidance
+```tsx
+// Functional component with forwardRef
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ label, error, ...props }, ref) => (
+    <div>
+      <label htmlFor={props.id}>{label}</label>
+      <input ref={ref} aria-invalid={!!error} {...props} />
+      {error && <span role="alert">{error}</span>}
+    </div>
+  )
+);
+Input.displayName = 'Input';
+```
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Hook Patterns
 
-## Implementation checklist
+```typescript
+// Custom data-fetching hook
+function useUser(id: string) {
+  return useQuery({
+    queryKey: ['users', id],
+    queryFn: () => apiClient.get<User>(`/v1/users/${id}`),
+    enabled: !!id,
+  });
+}
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+// Custom mutation hook
+function useUpdateUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: UpdateUserInput) => apiClient.patch('/v1/users/me', data),
+    onSuccess: (user) => {
+      queryClient.setQueryData(['users', user.id], user);
+    },
+  });
+}
+```
 
-## Documentation template for contributors
+## Error Boundary
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+```tsx
+// Wrap each route in an error boundary
+<ErrorBoundary fallback={<ErrorPage />}>
+  <Suspense fallback={<PageSkeleton />}>
+    <Dashboard />
+  </Suspense>
+</ErrorBoundary>
+```
 
-## Verified sources
+## Verified Sources
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
-
+- React Docs — https://react.dev/
+- TanStack Query — https://tanstack.com/query/latest

@@ -1,44 +1,47 @@
-# Ui Ux
+# UI/UX Guidelines
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md) | [COMPONENT_LIBRARY.md](../../COMPONENT_LIBRARY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+UI/UX principles for building consistent, user-friendly interfaces.
 
-- The production purpose of **Ui Ux** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Design Principles
 
-## Source-aligned guidance
+1. **Clarity** — Users should always know where they are and what to do next
+2. **Feedback** — Every action must have visible feedback (loading, success, error)
+3. **Consistency** — Same patterns for same behaviors throughout the app
+4. **Accessibility** — Designed for all users including those using assistive tech
+5. **Responsiveness** — Works on mobile (375px) through desktop (1440px)
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Loading States
 
-## Implementation checklist
+Every async operation must show a loading state:
+- Button loading: spinner + disabled
+- Page loading: skeleton screens (not spinners for layout elements)
+- Data fetching: use React Query's `isLoading` state
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Error States
 
-## Documentation template for contributors
+- Show error message inline, near the cause
+- Always provide a recovery action (retry, go back)
+- Never leave users at a dead end
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Empty States
 
-## Verified sources
+- Empty lists must have a descriptive empty state
+- Include a call-to-action when possible
 
-- MDN Web Docs — https://developer.mozilla.org/en-US/docs/Web
-- WHATWG HTML Living Standard — https://html.spec.whatwg.org/
-- W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
+## Responsive Breakpoints
 
+| Name | Width |
+|---|---|
+| Mobile | 320–767px |
+| Tablet | 768–1023px |
+| Desktop | 1024px+ |
+
+## Verified Sources
+
+- Material Design Guidelines — https://m3.material.io/
+- Apple HIG — https://developer.apple.com/design/human-interface-guidelines/
+- Nielsen Norman Group — https://www.nngroup.com/

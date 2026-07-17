@@ -1,44 +1,59 @@
 # Messaging Platform
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [docs/realtime/websocket.md](websocket.md) | [docs/cloudflare/queues.md](../cloudflare/queues.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Messaging platform architecture combining WebSockets for realtime delivery and Queues for reliable async delivery.
 
-- The production purpose of **Messaging Platform** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Delivery Modes
 
-## Source-aligned guidance
+| Mode | Technology | Use Case |
+|---|---|---|
+| Realtime | WebSocket + Durable Objects | Chat, live presence |
+| Near-realtime | Server-Sent Events (SSE) | Notifications, feeds |
+| Async | Cloudflare Queues | Email, webhooks |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Notification Delivery Flow
 
-## Implementation checklist
+```
+User Action → Worker → Enqueue notification
+                     → Durable Object: notify connected WS clients
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+Queue Consumer → Process notification
+              → Email/Push if user offline
+```
 
-## Documentation template for contributors
+## Server-Sent Events
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+```typescript
+// Worker SSE endpoint
+app.get('/api/v1/notifications/stream', async (c) => {
+  const { readable, writable } = new TransformStream();
+  const writer = writable.getWriter();
+  const encoder = new TextEncoder();
 
-## Verified sources
+  // Send heartbeat every 30s
+  const interval = setInterval(() => {
+    writer.write(encoder.encode('event: heartbeat\ndata: {}\n\n'));
+  }, 30000);
 
-- MDN WebSocket API — https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
-- RFC 6455 WebSocket Protocol — https://www.rfc-editor.org/rfc/rfc6455
-- Cloudflare Durable Objects Docs — https://developers.cloudflare.com/durable-objects/
+  c.req.raw.signal.addEventListener('abort', () => {
+    clearInterval(interval);
+    writer.close();
+  });
 
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  });
+});
+```
+
+## Verified Sources
+
+- MDN Server-Sent Events — https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+- Cloudflare Queues — https://developers.cloudflare.com/queues/

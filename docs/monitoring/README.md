@@ -1,46 +1,48 @@
 # Monitoring
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [MONITORING.md](../../MONITORING.md) | **Related:** [OBSERVABILITY.md](../../OBSERVABILITY.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Monitoring documentation. See [MONITORING.md](../../MONITORING.md) for the full setup and alerting configuration.
 
-- The production purpose of **Monitoring** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Tools
 
-## Source-aligned guidance
+| Tool | Purpose |
+|---|---|
+| Cloudflare Analytics | Worker metrics, error rates, CPU |
+| `wrangler tail` | Live log streaming |
+| Sentry | Error tracking and alerting |
+| Uptime monitoring | Endpoint availability |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Key Metrics
 
-## Implementation checklist
+- API error rate (target < 0.1%)
+- API p99 latency (target < 300ms)
+- Worker CPU p99 (target < 10ms)
+- Health check availability (target 99.9%)
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Quick Commands
 
-## Documentation template for contributors
+```bash
+# Live Worker logs
+wrangler tail --env production
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+# Filter errors only
+wrangler tail --env production --status error
 
-## Verified sources
+# Health check
+curl https://api.{domain}/health
+```
 
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
+## Alerting
 
+Alerts defined in [MONITORING.md](../../MONITORING.md):
+- API down: Critical (Email + SMS)
+- Error rate > 1%: High (Email)
+- Latency p99 > 500ms: Medium (Email)
+
+## Verified Sources
+
+- Cloudflare Analytics — https://developers.cloudflare.com/analytics/
+- Sentry Cloudflare SDK — https://docs.sentry.io/platforms/javascript/guides/cloudflare/

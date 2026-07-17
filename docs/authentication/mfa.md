@@ -1,45 +1,45 @@
-# MFA
+# Multi-Factor Authentication (MFA)
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [AUTHENTICATION.md](../../AUTHENTICATION.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+MFA adds a second factor beyond password. Currently **planned** for v1.2.0.
 
-- The production purpose of **MFA** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Planned Implementation
 
-## Source-aligned guidance
+| Method | Status | Notes |
+|---|---|---|
+| TOTP (Authenticator app) | 📋 Planned | Google Authenticator, Authy |
+| Backup codes | 📋 Planned | 10 single-use codes |
+| SMS OTP | 🚫 Not recommended | NIST 800-63B discourages SMS |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## TOTP Flow (Planned)
 
-## Implementation checklist
+```
+1. User enables MFA in settings
+2. Backend generates TOTP secret → returns QR code URI
+3. User scans with authenticator app
+4. User confirms with first TOTP code
+5. Backend marks MFA as verified
+6. All subsequent logins require TOTP code after password
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## TOTP Implementation (Reference)
 
-## Documentation template for contributors
+```typescript
+import { generateTOTPSecret, verifyTOTP } from 'otplib'; // (planned)
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+// Generate secret for enrollment
+const secret = generateTOTPSecret();
+const otpauthUrl = `otpauth://totp/${encodeURIComponent(email)}?secret=${secret}&issuer=MyApp`;
 
-## Verified sources
+// Verify code on login
+const isValid = verifyTOTP(userProvidedCode, storedSecret);
+```
 
-- OAuth 2.0 RFC 6749 — https://www.rfc-editor.org/rfc/rfc6749
-- JWT RFC 7519 — https://www.rfc-editor.org/rfc/rfc7519
-- OWASP Authentication Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-- NIST Digital Identity Guidelines — https://pages.nist.gov/800-63-3/
+## Verified Sources
 
+- RFC 6238 (TOTP) — https://www.rfc-editor.org/rfc/rfc6238
+- NIST SP 800-63B — https://pages.nist.gov/800-63-3/sp800-63b.html
+- OWASP MFA Cheatsheet — https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html

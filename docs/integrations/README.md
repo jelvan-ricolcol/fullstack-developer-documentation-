@@ -1,46 +1,53 @@
-# Integrations
+# Third-Party Integrations
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Related:** [SERVICE_REGISTRY.md](../../SERVICE_REGISTRY.md) | [ENVIRONMENT_VARIABLES.md](../../ENVIRONMENT_VARIABLES.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+This document covers third-party service integrations. For service contracts and SLAs, see [SERVICE_REGISTRY.md](../../SERVICE_REGISTRY.md).
 
-- The production purpose of **Integrations** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Active Integrations
 
-## Source-aligned guidance
+| Service | Purpose | Auth |
+|---|---|---|
+| Google OAuth | Social login | Client ID + Secret |
+| GitHub OAuth | Developer login | Client ID + Secret |
+| Resend / SES | Transactional email | API Key |
+| Stripe | Payments | Secret Key + Webhook Secret |
+| Sentry | Error tracking | DSN |
+| Cloudflare Turnstile | Bot protection | Site Key + Secret |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Adding a New Integration
 
-## Implementation checklist
+1. Evaluate necessity — avoid unnecessary dependencies
+2. Review service SLA and privacy policy
+3. Store credentials in Cloudflare Secrets (never code)
+4. Document in [SERVICE_REGISTRY.md](../../SERVICE_REGISTRY.md)
+5. Add environment variables to [ENVIRONMENT_VARIABLES.md](../../ENVIRONMENT_VARIABLES.md)
+6. Implement error handling for service unavailability
+7. Update [CHANGELOG.md](../../CHANGELOG.md)
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Integration Pattern
 
-## Documentation template for contributors
+```typescript
+// Wrap external calls with error handling
+async function sendEmail(to: string, subject: string, html: string): Promise<void> {
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `****** env.EMAIL_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ from: env.EMAIL_FROM, to, subject, html }),
+  });
+  if (!response.ok) {
+    throw new Error(`Email send failed: ${response.status}`);
+  }
+}
+```
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Verified Sources
 
-## Verified sources
-
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
-
+- Resend Docs — https://resend.com/docs
+- Stripe Docs — https://stripe.com/docs
+- Sentry Cloudflare — https://docs.sentry.io/platforms/javascript/guides/cloudflare/

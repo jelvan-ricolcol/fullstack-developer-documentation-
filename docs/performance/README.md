@@ -1,46 +1,56 @@
 # Performance
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [PERFORMANCE.md](../../PERFORMANCE.md) | **Related:** [MONITORING.md](../../MONITORING.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Performance documentation for the full-stack application. See [PERFORMANCE.md](../../PERFORMANCE.md) for budgets and targets.
 
-- The production purpose of **Performance** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Core Web Vitals Targets
 
-## Source-aligned guidance
+| Metric | Good | Alert |
+|---|---|---|
+| LCP | ≤ 2.5s | > 4s |
+| INP | ≤ 200ms | > 500ms |
+| CLS | ≤ 0.1 | > 0.25 |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## API Latency Targets
 
-## Implementation checklist
+| Percentile | Target | Alert |
+|---|---|---|
+| p50 | < 50ms | > 100ms |
+| p95 | < 150ms | > 300ms |
+| p99 | < 300ms | > 500ms |
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Key Optimizations
 
-## Documentation template for contributors
+### Cloudflare Workers
+- Use `ctx.waitUntil()` for non-blocking background tasks
+- Cache hot data in KV with appropriate TTL
+- Use `env.DB.batch()` for parallel D1 queries
+- Keep Worker CPU under 10ms on free tier
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+### Frontend
+- Route-level code splitting with React.lazy
+- Image optimization (WebP, lazy loading)
+- Preload critical routes and fonts
+- Bundle size budget: < 200KB gzipped initial JS
 
-## Verified sources
+## Profiling Tools
 
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
+```bash
+# Worker CPU time
+wrangler tail --env production --format json | jq '.cpuTime'
 
+# Lighthouse audit
+npx lhci autorun
+
+# Bundle analysis
+npm run build:analyze
+```
+
+## Verified Sources
+
+- Web Vitals — https://web.dev/vitals/
+- Cloudflare Workers Limits — https://developers.cloudflare.com/workers/platform/limits/
+- Lighthouse CI — https://github.com/GoogleChrome/lighthouse-ci

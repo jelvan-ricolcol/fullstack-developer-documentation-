@@ -1,46 +1,55 @@
-# References
+# External References
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Authoritative external references used throughout this documentation.
 
-- The production purpose of **References** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Standards & Specifications
 
-## Source-aligned guidance
+| Standard | URL |
+|---|---|
+| WHATWG HTML | https://html.spec.whatwg.org/ |
+| WHATWG Fetch | https://fetch.spec.whatwg.org/ |
+| ECMAScript | https://tc39.es/ecma262/ |
+| Web Crypto API | https://www.w3.org/TR/WebCryptoAPI/ |
+| RFC 7519 (JWT) | https://www.rfc-editor.org/rfc/rfc7519 |
+| RFC 6749 (OAuth 2.0) | https://www.rfc-editor.org/rfc/rfc6749 |
+| RFC 7636 (PKCE) | https://www.rfc-editor.org/rfc/rfc7636 |
+| WCAG 2.1 | https://www.w3.org/TR/WCAG21/ |
+| OpenAPI 3.1 | https://spec.openapis.org/oas/v3.1.0 |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Security References
 
-## Implementation checklist
+| Standard | URL |
+|---|---|
+| OWASP Top 10 | https://owasp.org/www-project-top-ten/ |
+| OWASP Cheat Sheets | https://cheatsheetseries.owasp.org/ |
+| NIST SP 800-63B | https://pages.nist.gov/800-63-3/sp800-63b.html |
+| CISA KEV | https://www.cisa.gov/known-exploited-vulnerabilities-catalog |
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Platform Documentation
 
-## Documentation template for contributors
+| Platform | URL |
+|---|---|
+| Cloudflare Workers | https://developers.cloudflare.com/workers/ |
+| Cloudflare Pages | https://developers.cloudflare.com/pages/ |
+| Cloudflare D1 | https://developers.cloudflare.com/d1/ |
+| Cloudflare R2 | https://developers.cloudflare.com/r2/ |
+| Cloudflare KV | https://developers.cloudflare.com/kv/ |
+| GitHub Docs | https://docs.github.com/ |
+| GitHub Actions | https://docs.github.com/actions |
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Frameworks & Libraries
 
-## Verified sources
-
-- Docker Docs — https://docs.docker.com/
-- Kubernetes Docs — https://kubernetes.io/docs/
-- OpenTelemetry Docs — https://opentelemetry.io/docs/
-- Prometheus Docs — https://prometheus.io/docs/
-- The Twelve-Factor App — https://12factor.net/
-
+| Library | URL |
+|---|---|
+| React | https://react.dev/ |
+| TypeScript | https://www.typescriptlang.org/docs/ |
+| Hono | https://hono.dev/ |
+| Zod | https://zod.dev/ |
+| TanStack Query | https://tanstack.com/query/latest |
+| Zustand | https://zustand-demo.pmnd.rs/ |
+| Vitest | https://vitest.dev/ |
+| Playwright | https://playwright.dev/ |

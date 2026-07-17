@@ -1,47 +1,61 @@
-# Workers Backend
+# Cloudflare Workers Backend
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [BACKEND.md](../../BACKEND.md) | **Related:** [CLOUDFLARE.md](../../CLOUDFLARE.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Cloudflare Workers-specific backend patterns. See [BACKEND.md](../../BACKEND.md) for the full backend architecture.
 
-- The production purpose of **Workers Backend** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Environment Bindings Type
 
-## Source-aligned guidance
+```typescript
+// types/env.ts
+export interface Env {
+  // Cloudflare bindings
+  DB: D1Database;
+  BUCKET: R2Bucket;
+  KV: KVNamespace;
+  DO: DurableObjectNamespace;
+  QUEUE: Queue;
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+  // Secrets (set via wrangler secret put)
+  JWT_SECRET: string;
+  JWT_ISSUER: string;
+  JWT_AUDIENCE: string;
+  EMAIL_API_KEY: string;
 
-## Implementation checklist
+  // Vars (set via wrangler.toml [vars])
+  ENVIRONMENT: 'local' | 'staging' | 'production';
+  CORS_ORIGINS: string;
+}
+```
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+## Worker Limitations to Remember
 
-## Documentation template for contributors
+- No `process.env` → use `env.VAR_NAME`
+- No `fs` → use R2 (`env.BUCKET`)
+- No `require()` → use ESM `import`
+- No `__dirname` → not needed in Workers
+- CPU limit: 10ms (free) / 30s (paid)
+- Web Crypto: `crypto.subtle` (not Node.js `crypto`)
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+## Execution Context
 
-## Verified sources
+```typescript
+export default {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    // ctx.waitUntil — schedule async work after response
+    ctx.waitUntil(logRequest(request, env));
 
-- Cloudflare Workers Docs — https://developers.cloudflare.com/workers/
-- Cloudflare D1 Docs — https://developers.cloudflare.com/d1/
-- Cloudflare R2 Docs — https://developers.cloudflare.com/r2/
-- Cloudflare KV Docs — https://developers.cloudflare.com/kv/
-- Cloudflare Durable Objects Docs — https://developers.cloudflare.com/durable-objects/
-- Cloudflare Queues Docs — https://developers.cloudflare.com/queues/
+    // ctx.passThroughOnException — fall through to origin on error
+    // ctx.passThroughOnException(); (use cautiously)
 
+    return app.fetch(request, env, ctx);
+  },
+};
+```
+
+## Verified Sources
+
+- Cloudflare Workers Runtime — https://developers.cloudflare.com/workers/runtime-apis/
+- Cloudflare Workers Limits — https://developers.cloudflare.com/workers/platform/limits/

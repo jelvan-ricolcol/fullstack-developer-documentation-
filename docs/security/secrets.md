@@ -1,44 +1,54 @@
-# Secrets
+# Secrets Management
 
-## Verification status
+> **Back to:** [INDEX.md](../../INDEX.md) | **Root doc:** [SECURITY.md](../../SECURITY.md) | **Related:** [ENVIRONMENT_VARIABLES.md](../../ENVIRONMENT_VARIABLES.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+## Overview
 
-## What this covers
+Secrets management policy. No secret may ever be committed to the repository.
 
-- The production purpose of **Secrets** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+## Where Secrets Live
 
-## Source-aligned guidance
+| Secret Type | Storage | Access |
+|---|---|---|
+| Worker runtime secrets | Cloudflare Secrets | `env.SECRET_NAME` |
+| CI/CD secrets | GitHub Secrets | `${{ secrets.NAME }}` |
+| Local dev secrets | `.env.local` (gitignored) | `process.env` (Wrangler dev) |
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Setting Cloudflare Secrets
 
-## Implementation checklist
+```bash
+# Set a secret
+wrangler secret put JWT_SECRET
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+# List secrets (names only — values never shown)
+wrangler secret list
 
-## Documentation template for contributors
+# Delete a secret
+wrangler secret delete OLD_SECRET
 
-- **Decision:** What implementation choice was made?
-- **Source:** Which official document backs the choice?
-- **Reason:** Why is it appropriate for this project?
-- **Risk:** What breaks if the assumption changes?
-- **Validation:** Which test, command, or review proves it works?
+# Set for specific environment
+wrangler secret put OAUTH_SECRET --env production
+```
 
-## Verified sources
+## Secret Rotation
 
-- OWASP Cheat Sheet Series — https://cheatsheetseries.owasp.org/
-- OWASP Top 10 — https://owasp.org/www-project-top-ten/
-- CISA Known Exploited Vulnerabilities — https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+When rotating a secret:
+1. Generate new secret value
+2. Deploy new secret: `wrangler secret put KEY`
+3. Verify services function with new secret
+4. Invalidate all existing tokens/sessions signed with old secret
+5. Document rotation in incident log
 
+## What Never to Do
+
+- ❌ Never put secrets in `wrangler.toml` (committed to git)
+- ❌ Never put secrets in `.env` files that are committed
+- ❌ Never log secret values
+- ❌ Never hardcode secrets in source code
+- ❌ Never pass secrets as URL parameters
+
+## Verified Sources
+
+- OWASP Secrets Management — https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
+- Cloudflare Secrets — https://developers.cloudflare.com/workers/configuration/secrets/
+- GitHub Encrypted Secrets — https://docs.github.com/actions/security-guides/encrypted-secrets

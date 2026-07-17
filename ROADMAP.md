@@ -1,32 +1,133 @@
-# Roadmap
+# ROADMAP.md — Development Roadmap
 
-## Verification status
+> **Back to:** [INDEX.md](INDEX.md) | **Related:** [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md) | [CHANGELOG.md](CHANGELOG.md) | [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md)
 
-This document has been rechecked against official vendor, standards-body, or mature security references. Treat linked sources as authoritative when platform limits, syntax, pricing, or feature availability changes.
+---
 
-## What this covers
+## Metadata
 
-- The production purpose of **Roadmap** in a full-stack system.
-- The implementation decisions that must be documented before build or rollout.
-- The security, reliability, testing, and operations checks expected for maintainable delivery.
+| Field | Value |
+|---|---|
+| **Version** | 1.0.0 |
+| **Owner** | @jelvan-ricolcol |
+| **Last Updated** | 2026-07-17 |
+| **Status** | Active |
+| **Scope** | Development roadmap and future improvements |
 
-## Source-aligned guidance
+---
 
-- Start with the official specification or vendor guide listed below; do not rely on blog posts for normative behavior.
-- Record versions, runtime targets, regions, limits, and compatibility assumptions when they affect implementation.
-- Use least privilege for credentials, API tokens, service roles, CI jobs, and deployed workloads.
-- Validate inputs at trust boundaries and encode or parameterize outputs according to the target protocol or storage engine.
-- Prefer automated checks: unit tests, integration tests, linting, type checks, schema validation, dependency scanning, and deployment smoke tests.
-- Document rollback, incident response, logging fields, metrics, traces, alerts, and ownership before production release.
+## Overview
 
-## Implementation checklist
+This roadmap outlines the planned evolution of the system. Items are grouped by phase and priority. All shipped items are tracked in [CHANGELOG.md](CHANGELOG.md) and [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md).
 
-1. Define the user journey, data involved, failure modes, and business criticality.
-2. Select the official source below that governs API shape, runtime behavior, or security requirements.
-3. Capture configuration in code where safe; store secrets only in approved secret stores.
-4. Add examples that can be copied, tested, and updated without hidden dependencies.
-5. Review accessibility, privacy, security, performance, and operability before merging.
-6. Schedule periodic source rechecks for pages tied to fast-moving vendors or cloud services.
+---
+
+## Current Status (v1.0.0)
+
+- ✅ Documentation knowledge base (40+ documents)
+- ✅ Core authentication (email/password + OAuth)
+- ✅ RBAC authorization
+- ✅ REST API with Cloudflare Workers
+- ✅ D1 database with migrations
+- ✅ R2 file storage
+- ✅ KV caching
+- ✅ CI/CD with GitHub Actions
+
+---
+
+## Phase 2 — v1.1.0 (Planned)
+
+| Feature | Priority | Docs |
+|---|---|---|
+| Magic link (passwordless) login | High | AUTH-006 |
+| Avatar upload with image optimization | Medium | USER-006 |
+| Email change with verification flow | Medium | USER-007 |
+| Sentry error tracking integration | High | OPS-006 |
+| Signed R2 URL generation | Medium | STOR-004 |
+| Storybook for component library | Low | — |
+
+---
+
+## Phase 3 — v1.2.0 (Planned)
+
+| Feature | Priority | Notes |
+|---|---|---|
+| TOTP MFA for admin accounts | High | AUTH-007 |
+| Real-time notifications via Durable Objects | Medium | — |
+| Full-text search | Medium | FTS5 or external |
+| Audit log dashboard (admin) | Low | — |
+| Dark mode | Low | Design system |
+
+---
+
+## Phase 4 — v2.0.0 (Research)
+
+| Feature | Priority | Notes |
+|---|---|---|
+| Migrate to PostgreSQL via Hyperdrive | Medium | When D1 limits are reached |
+| Multi-tenant architecture | High | For SaaS scaling |
+| GraphQL API layer | Low | In addition to REST |
+| Mobile app (React Native or Flutter) | Medium | Shares Workers API |
+| AI features via Cloudflare AI Gateway | Medium | — |
+
+---
+
+## Infrastructure Improvements
+
+| Item | Priority | Notes |
+|---|---|---|
+| Cloudflare Zero Trust access for admin | High | Replace IP-based allow |
+| Logpush to R2 for log archival | Medium | 90-day retention |
+| Uptime monitoring (BetterUptime) | High | Alert on downtime |
+| Performance RUM (PostHog) | Low | Real user monitoring |
+
+---
+
+## Documentation Roadmap
+
+| Item | Status |
+|---|---|
+| OpenAPI spec (openapi.yaml) | 📋 Planned |
+| Storybook component docs | 📋 Planned |
+| Architecture Decision Records (ADRs) | 📋 Planned |
+| Video walkthrough of architecture | 🔬 Research |
+
+---
+
+## Known Technical Debt
+
+| Item | Impact | Planned Fix |
+|---|---|---|
+| D1 single-writer bottleneck | Medium | Phase 4: Hyperdrive + PostgreSQL |
+| No circuit breaker for external APIs | Low | KV-based flag in Phase 3 |
+| No DLQ for failed queue messages | Medium | Phase 2: D1-backed DLQ |
+
+See: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md)
+
+---
+
+## Verified Sources
+
+- Cloudflare Roadmap — https://developers.cloudflare.com/changelog/
+- GitHub Actions Docs — https://docs.github.com/actions
+- NIST Cybersecurity Framework — https://www.nist.gov/cyberframework
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0.0 | 2026-07-17 | Comprehensive roadmap documentation |
+
+---
+
+## Related Documents
+
+- [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md) — Feature status tracking
+- [CHANGELOG.md](CHANGELOG.md) — Shipped changes
+- [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md) — Constraints driving roadmap
+- [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) — Architecture decisions
 
 ## Documentation template for contributors
 
