@@ -42,3 +42,7 @@ This document has been rechecked against official vendor, standards-body, or mat
 - GitHub Actions Docs — https://docs.github.com/actions
 - GitHub Actions security — https://docs.github.com/actions/security-for-github-actions
 
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

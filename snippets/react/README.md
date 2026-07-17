@@ -42,3 +42,7 @@ This document has been rechecked against official vendor, standards-body, or mat
 - WHATWG HTML Living Standard — https://html.spec.whatwg.org/
 - W3C WCAG — https://www.w3.org/WAI/standards-guidelines/wcag/
 
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*
