@@ -1,0 +1,30 @@
+name = "workers-example"
+main = "./dist/index.js"
+compatibility_date = "2026-01-01"
+
+[build]
+command = "npm run build"
+
+[vars]
+  NODE_ENV = "development"
+
+[dev]
+  ip = "127.0.0.1"
+
+[[r2_buckets]]
+binding = "MY_R2"
+bucket_name = "MY_R2_BUCKET"
+
+[[d1_databases]]
+binding = "MY_D1"
+database_name = "MY_D1_DB"
+
+[[kv_namespaces]]
+binding = "MY_KV"
+id = "<kv-namespace-id>"
+
+[durable_objects]
+bindings = [ { name = "CHAT_DO", class_name = "ChatDO" } ]
+
+[env.production]
+vars = { NODE_ENV = "production" }
