@@ -65,3 +65,7 @@ const hashHex = Array.from(new Uint8Array(hashBuffer))
 - OWASP Password Storage — https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 - NIST SP 800-63B — https://pages.nist.gov/800-63-3/sp800-63b.html
 - Web Crypto API — https://www.w3.org/TR/WebCryptoAPI/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

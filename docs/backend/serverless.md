@@ -42,3 +42,7 @@ Workers use V8 isolates — cold start is near-zero (~0ms). New isolates are cre
 
 - Cloudflare Workers Docs — https://developers.cloudflare.com/workers/
 - The Twelve-Factor App — https://12factor.net/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

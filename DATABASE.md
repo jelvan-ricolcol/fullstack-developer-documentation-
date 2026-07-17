@@ -257,3 +257,7 @@ When D1 limitations are reached (size, write throughput, complex queries):
 - [docs/database/sql.md](docs/database/sql.md) — SQL patterns
 - [docs/database/migrations.md](docs/database/migrations.md) — Migration guide
 - [docs/cloudflare/d1.md](docs/cloudflare/d1.md) — D1 deep dive
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

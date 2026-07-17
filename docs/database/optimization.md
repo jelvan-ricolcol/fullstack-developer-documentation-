@@ -66,3 +66,7 @@ await env.KV.put(cacheKey, JSON.stringify(user), { expirationTtl: 300 });
 
 - SQLite Query Planning — https://www.sqlite.org/queryplanner.html
 - SQLite EXPLAIN — https://www.sqlite.org/eqp.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

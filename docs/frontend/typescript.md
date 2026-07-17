@@ -74,3 +74,7 @@ function List<T extends { id: string }>({ items, renderItem }: {
 
 - TypeScript Docs — https://www.typescriptlang.org/docs/
 - React TypeScript Guide — https://react-typescript-cheatsheet.netlify.app/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

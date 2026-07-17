@@ -218,3 +218,7 @@ function UserList() {
 - [API.md](API.md) — API contracts consumed by queries
 - [AUTHENTICATION.md](AUTHENTICATION.md) — Auth state management
 - [docs/frontend/state-management.md](docs/frontend/state-management.md) — State deep dive
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

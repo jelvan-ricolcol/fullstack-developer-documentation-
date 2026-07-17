@@ -43,3 +43,7 @@ Observability documentation. See [OBSERVABILITY.md](../../OBSERVABILITY.md) for 
 
 - OpenTelemetry Docs — https://opentelemetry.io/docs/
 - Cloudflare Logpush — https://developers.cloudflare.com/logs/get-started/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

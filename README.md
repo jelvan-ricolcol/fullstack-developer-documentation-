@@ -81,3 +81,7 @@ When official sources change, the linked source takes precedence. Contributors m
 ## Documentation Policy
 
 This repository enforces **documentation-first development**. No feature, fix, or infrastructure change is complete until documentation is synchronized. See [AI_POLICY.md](AI_POLICY.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

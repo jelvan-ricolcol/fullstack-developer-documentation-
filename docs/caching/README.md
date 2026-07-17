@@ -56,3 +56,7 @@ headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=30');
 
 - Cloudflare KV — https://developers.cloudflare.com/kv/
 - HTTP Caching (MDN) — https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

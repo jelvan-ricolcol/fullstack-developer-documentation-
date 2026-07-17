@@ -74,3 +74,7 @@ const { payload } = await jwtVerify(
 - RFC 7519 (JWT) — https://www.rfc-editor.org/rfc/rfc7519
 - jose library — https://github.com/panva/jose
 - OWASP JWT Cheatsheet — https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

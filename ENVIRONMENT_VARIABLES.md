@@ -214,3 +214,7 @@ function validateEnv(env: Env): void {
 - [SECURITY.md](SECURITY.md) — Secrets management policy
 - [CI_CD.md](CI_CD.md) — GitHub Actions secrets
 - [AUTHENTICATION.md](AUTHENTICATION.md) — Auth variable usage
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -56,3 +56,7 @@ export default { fetch: yoga.fetch };
 - GraphQL Spec — https://spec.graphql.org/
 - GraphQL Yoga — https://the-guild.dev/graphql/yoga-server
 - OWASP GraphQL — https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

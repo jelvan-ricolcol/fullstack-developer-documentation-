@@ -54,3 +54,7 @@ class ApiClient {
 
 - Flutter Web Docs — https://docs.flutter.dev/platform-integration/web
 - Flutter HTTP Package — https://pub.dev/packages/http
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

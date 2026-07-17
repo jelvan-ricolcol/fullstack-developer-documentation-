@@ -61,3 +61,7 @@ function useUpdateUser() {
 
 - React Docs — https://react.dev/
 - TanStack Query — https://tanstack.com/query/latest
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -152,3 +152,7 @@ See: [DATABASE.md](DATABASE.md)
 - [SECURITY.md](SECURITY.md) — File upload security
 - [docs/cloudflare/r2.md](docs/cloudflare/r2.md) — R2 deep dive
 - [docs/cloudflare/kv.md](docs/cloudflare/kv.md) — KV deep dive
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

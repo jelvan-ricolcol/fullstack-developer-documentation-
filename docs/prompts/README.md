@@ -61,3 +61,7 @@ Create a new React component {ComponentName}.
 
 - Anthropic Prompt Library — https://docs.anthropic.com/
 - OpenAI Prompt Engineering — https://platform.openai.com/docs/guides/prompt-engineering
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

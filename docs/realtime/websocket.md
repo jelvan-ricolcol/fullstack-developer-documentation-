@@ -63,3 +63,7 @@ ws.addEventListener('close', (event) => {
 - Cloudflare WebSockets — https://developers.cloudflare.com/workers/examples/websockets/
 - MDN WebSocket API — https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 - RFC 6455 (WebSocket) — https://www.rfc-editor.org/rfc/rfc6455
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

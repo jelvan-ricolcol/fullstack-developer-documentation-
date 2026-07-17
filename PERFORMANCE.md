@@ -200,3 +200,7 @@ See: [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md)
 - [BACKEND.md](BACKEND.md) — Backend patterns
 - [FRONTEND.md](FRONTEND.md) — Frontend patterns
 - [docs/performance/README.md](docs/performance/README.md) — Performance deep dive
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

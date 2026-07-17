@@ -63,3 +63,7 @@ See [ENVIRONMENT_VARIABLES.md](../../ENVIRONMENT_VARIABLES.md) for all environme
 - Wrangler Docs — https://developers.cloudflare.com/workers/wrangler/
 - Cloudflare Pages Deploy — https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/
 - Wrangler GitHub Action — https://github.com/cloudflare/wrangler-action
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -43,3 +43,7 @@ const isValid = verifyTOTP(userProvidedCode, storedSecret);
 - RFC 6238 (TOTP) — https://www.rfc-editor.org/rfc/rfc6238
 - NIST SP 800-63B — https://pages.nist.gov/800-63-3/sp800-63b.html
 - OWASP MFA Cheatsheet — https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

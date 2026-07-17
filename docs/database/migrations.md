@@ -61,3 +61,7 @@ wrangler d1 migrations list --env production
 
 - Cloudflare D1 Migrations — https://developers.cloudflare.com/d1/reference/migrations/
 - SQLite ALTER TABLE — https://www.sqlite.org/lang_altertable.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

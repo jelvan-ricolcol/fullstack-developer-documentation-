@@ -175,3 +175,7 @@ Reference: [SECURITY.md](SECURITY.md)
 - [SECURITY.md](SECURITY.md) — Security policy
 - [CODING_STANDARDS.md](CODING_STANDARDS.md) — Code conventions
 - [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

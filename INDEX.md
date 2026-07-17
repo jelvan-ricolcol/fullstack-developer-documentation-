@@ -326,16 +326,16 @@ graph TD
 - [CONTRIBUTING.md](CONTRIBUTING.md) — How to add or update documentation
 
 ## Enterprise AI Standards
-- [Ai Governance](AI_GOVERNANCE.md)
-- [Github Cloudflare Source Of Truth](GITHUB_CLOUDFLARE_SOURCE_OF_TRUTH.md)
+- [AI Governance](AI_GOVERNANCE.md)
+- [GitHub Cloudflare Source Of Truth](GITHUB_CLOUDFLARE_SOURCE_OF_TRUTH.md)
 - [Deployment State Machine](DEPLOYMENT_STATE_MACHINE.md)
-- [Ai Agent Architecture](AI_AGENT_ARCHITECTURE.md)
+- [AI Agent Architecture](AI_AGENT_ARCHITECTURE.md)
 - [Repository Map](REPOSITORY_MAP.md)
 - [Enterprise Decision Trees](ENTERPRISE_DECISION_TREES.md)
 - [Universal Development Lifecycle](UNIVERSAL_DEVELOPMENT_LIFECYCLE.md)
 - [Enterprise Coding Policies](ENTERPRISE_CODING_POLICIES.md)
-- [Jelai Dashboard Architecture](JELAI_DASHBOARD_ARCHITECTURE.md)
-- [Ai Prompt Standards](AI_PROMPT_STANDARDS.md)
+- [JelAI Dashboard Architecture](JELAI_DASHBOARD_ARCHITECTURE.md)
+- [AI Prompt Standards](AI_PROMPT_STANDARDS.md)
 
 ## Newly Audited Documents
 - [Colors](COLORS.md)

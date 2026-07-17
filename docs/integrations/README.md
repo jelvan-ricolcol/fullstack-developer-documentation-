@@ -51,3 +51,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
 - Resend Docs — https://resend.com/docs
 - Stripe Docs — https://stripe.com/docs
 - Sentry Cloudflare — https://docs.sentry.io/platforms/javascript/guides/cloudflare/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -53,3 +53,7 @@ Cookie: refresh_token=...
 
 - RFC 6750 (****** — https://www.rfc-editor.org/rfc/rfc6750
 - RFC 7519 (JWT) — https://www.rfc-editor.org/rfc/rfc7519
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

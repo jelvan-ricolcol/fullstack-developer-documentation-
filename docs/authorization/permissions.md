@@ -50,3 +50,7 @@ CREATE TABLE IF NOT EXISTS user_permissions (
 
 - OWASP Authorization Testing — https://owasp.org/www-project-web-security-testing-guide/
 - NIST RBAC — https://csrc.nist.gov/projects/role-based-access-control
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

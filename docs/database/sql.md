@@ -57,3 +57,7 @@ ON CONFLICT(email) DO UPDATE SET name = excluded.name, updated_at = excluded.upd
 - SQLite Documentation — https://www.sqlite.org/docs.html
 - Cloudflare D1 Docs — https://developers.cloudflare.com/d1/
 - OWASP SQL Injection Prevention — https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

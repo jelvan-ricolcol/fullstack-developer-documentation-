@@ -33,3 +33,7 @@ wrangler d1 execute DB --command "SELECT 1" --env production
 | Deploy fails | Token permissions in CF Dashboard |
 
 See [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md) for detailed resolution steps.
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

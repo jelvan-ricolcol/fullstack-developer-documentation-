@@ -50,3 +50,7 @@ See [docs/api/versioning.md](versioning.md).
 
 - OpenAPI 3.1 Spec — https://spec.openapis.org/oas/v3.1.0
 - Swagger UI — https://swagger.io/tools/swagger-ui/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -164,3 +164,7 @@ Mapping is handled in the repository layer.
 - [API.md](API.md) — API response models
 - [BACKEND.md](BACKEND.md) — Repository layer
 - [AUTHENTICATION.md](AUTHENTICATION.md) — Session data model
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

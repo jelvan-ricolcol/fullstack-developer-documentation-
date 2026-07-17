@@ -46,3 +46,7 @@ All UI must meet WCAG 2.1 Level AA. Accessibility is not optional.
 - WCAG 2.1 — https://www.w3.org/TR/WCAG21/
 - ARIA Authoring Practices — https://www.w3.org/WAI/ARIA/apg/
 - axe Rules — https://dequeuniversity.com/rules/axe/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -11,3 +11,7 @@ See [ARCHITECTURE.md](../../ARCHITECTURE.md) for the primary architecture docume
 - Cloudflare Workers Docs — https://developers.cloudflare.com/workers/
 - The Twelve-Factor App — https://12factor.net/
 - Martin Fowler Architecture Patterns — https://martinfowler.com/architecture/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -53,3 +53,7 @@ Sitemap: https://{domain}/sitemap.xml
 - Google Search Central — https://developers.google.com/search
 - Web Vitals — https://web.dev/vitals/
 - Schema.org — https://schema.org/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*
