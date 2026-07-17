@@ -59,3 +59,7 @@ Run via a scheduled Cloudflare Workers Cron Trigger or Queue job.
 
 - OWASP Session Management — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
 - RFC 6749 (OAuth 2.0) — https://www.rfc-editor.org/rfc/rfc6749
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

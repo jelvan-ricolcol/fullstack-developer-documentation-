@@ -47,3 +47,7 @@ Response:
 - REST API Design — https://restfulapi.net/
 - HTTP/1.1 RFC 7231 — https://www.rfc-editor.org/rfc/rfc7231
 - API Design Patterns (Google) — https://cloud.google.com/apis/design
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

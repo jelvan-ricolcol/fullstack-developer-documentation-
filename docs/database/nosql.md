@@ -44,3 +44,7 @@ SELECT * FROM items WHERE json_extract(metadata, '$.category') = 'article';
 
 - Cloudflare KV Docs — https://developers.cloudflare.com/kv/
 - SQLite JSON Functions — https://www.sqlite.org/json1.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

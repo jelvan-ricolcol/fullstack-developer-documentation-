@@ -71,3 +71,7 @@ await env.KV.put(`processed:${message.id}`, '1', { expirationTtl: 86400 });
 ## Verified Sources
 
 - Cloudflare Queues Docs — https://developers.cloudflare.com/queues/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

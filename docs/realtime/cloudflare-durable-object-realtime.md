@@ -58,3 +58,7 @@ export class ChatRoom implements DurableObject {
 
 - Cloudflare Durable Objects — https://developers.cloudflare.com/durable-objects/
 - Cloudflare Realtime Example — https://developers.cloudflare.com/durable-objects/examples/websocket-hibernation-server/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

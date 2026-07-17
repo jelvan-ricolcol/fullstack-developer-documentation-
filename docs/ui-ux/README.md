@@ -49,3 +49,7 @@ Every async operation must show a loading state:
 - Material Design Guidelines — https://m3.material.io/
 - Apple HIG — https://developer.apple.com/design/human-interface-guidelines/
 - Nielsen Norman Group — https://www.nngroup.com/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

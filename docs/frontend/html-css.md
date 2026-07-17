@@ -54,3 +54,7 @@ xl: 1280px  → Large desktop
 - MDN CSS — https://developer.mozilla.org/en-US/docs/Web/CSS
 - Tailwind CSS — https://tailwindcss.com/docs/
 - WHATWG HTML Living Standard — https://html.spec.whatwg.org/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -215,3 +215,7 @@ await auditLog(env.DB, {
 - [OBSERVABILITY.md](OBSERVABILITY.md) — Audit log monitoring
 - [docs/authorization/rbac.md](docs/authorization/rbac.md) — RBAC deep dive
 - [docs/authorization/permissions.md](docs/authorization/permissions.md) — Permissions detail
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

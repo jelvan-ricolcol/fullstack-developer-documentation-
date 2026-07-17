@@ -52,3 +52,7 @@ When rotating a secret:
 - OWASP Secrets Management — https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
 - Cloudflare Secrets — https://developers.cloudflare.com/workers/configuration/secrets/
 - GitHub Encrypted Secrets — https://docs.github.com/actions/security-guides/encrypted-secrets
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

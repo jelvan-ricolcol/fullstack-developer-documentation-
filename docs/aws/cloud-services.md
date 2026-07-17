@@ -39,3 +39,7 @@ const response = await fetch(`https://email.${region}.amazonaws.com/v2/email/out
 
 - AWS Documentation — https://docs.aws.amazon.com/
 - AWS SES Docs — https://docs.aws.amazon.com/ses/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

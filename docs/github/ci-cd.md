@@ -47,3 +47,7 @@ All third-party Actions are pinned to a specific commit SHA to prevent supply ch
 - GitHub Actions Docs — https://docs.github.com/actions
 - GitHub Actions Security — https://docs.github.com/actions/security-for-github-actions
 - Wrangler Action — https://github.com/cloudflare/wrangler-action
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

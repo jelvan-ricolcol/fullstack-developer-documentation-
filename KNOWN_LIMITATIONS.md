@@ -124,3 +124,7 @@ This document catalogs known platform limitations, architectural constraints, an
 - [CLOUDFLARE.md](CLOUDFLARE.md) — Cloudflare services
 - [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) — Design decisions accounting for limitations
 - [ROADMAP.md](ROADMAP.md) — Planned mitigations
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

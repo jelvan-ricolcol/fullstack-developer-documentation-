@@ -41,3 +41,7 @@ const { UserService } = require('./user.service');
 
 - ECMAScript Spec — https://tc39.es/ecma262/
 - MDN JavaScript — https://developer.mozilla.org/en-US/docs/Web/JavaScript
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -287,3 +287,7 @@ See: [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)
 - [PERFORMANCE.md](PERFORMANCE.md) — Performance budgets
 - [docs/frontend/react.md](docs/frontend/react.md) — React patterns
 - [docs/frontend/typescript.md](docs/frontend/typescript.md) — TypeScript standards
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

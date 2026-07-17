@@ -31,3 +31,7 @@ queryClient.setQueryData(['users', user.id], updatedUser)        // Optimistic u
 - TanStack Query Docs — https://tanstack.com/query/latest
 - Zustand Docs — https://docs.pmnd.rs/zustand/getting-started/introduction
 - React Hook Form — https://react-hook-form.com/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -45,3 +45,7 @@ spec:
 
 - Kubernetes Docs — https://kubernetes.io/docs/
 - Kubernetes Security — https://kubernetes.io/docs/concepts/security/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

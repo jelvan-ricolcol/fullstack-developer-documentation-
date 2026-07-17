@@ -51,3 +51,7 @@ Error:
 - REST API Tutorial — https://restfulapi.net/
 - HTTP Semantics (RFC 9110) — https://www.rfc-editor.org/rfc/rfc9110
 - Google API Design Guide — https://cloud.google.com/apis/design
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

@@ -301,3 +301,7 @@ OpenAPI spec maintained at `/docs/api/openapi.yaml` (when implemented).
 - [DATA_DICTIONARY.md](DATA_DICTIONARY.md) — Data field definitions
 - [docs/api/api-standards.md](docs/api/api-standards.md) — Detailed API standards
 - [docs/api/versioning.md](docs/api/versioning.md) — Versioning strategy
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

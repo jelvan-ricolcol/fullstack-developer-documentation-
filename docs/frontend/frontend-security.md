@@ -59,3 +59,7 @@ npx better-npm-audit audit
 
 - OWASP XSS — https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
 - OWASP CSRF — https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

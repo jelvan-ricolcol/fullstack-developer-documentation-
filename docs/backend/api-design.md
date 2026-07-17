@@ -41,3 +41,7 @@ export { users as usersRouter };
 
 - Hono Framework — https://hono.dev/
 - REST API Design — https://restfulapi.net/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

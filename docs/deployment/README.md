@@ -36,3 +36,7 @@ wrangler rollback --env production
 - Wrangler CLI Docs — https://developers.cloudflare.com/workers/wrangler/
 - Cloudflare Pages Docs — https://developers.cloudflare.com/pages/
 - GitHub Actions Cloudflare — https://github.com/cloudflare/wrangler-action
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

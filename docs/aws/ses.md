@@ -9,3 +9,7 @@ See [cloud-services.md](cloud-services.md) for the full AWS services overview an
 ## Verified Sources
 
 - AWS SES Documentation — https://docs.aws.amazon.com/ses/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*

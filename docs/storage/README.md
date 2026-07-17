@@ -37,3 +37,7 @@ feature:{flagName}      → TTL: 5min
 
 - Cloudflare R2 Docs — https://developers.cloudflare.com/r2/
 - Cloudflare KV Docs — https://developers.cloudflare.com/kv/
+
+
+---
+*Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*
