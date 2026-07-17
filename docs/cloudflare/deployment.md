@@ -32,13 +32,7 @@ wrangler tail --env production
 
 ```yaml
 - run: npm run build
-- run: |
-    set -euo pipefail
-    umask 077
-    secrets_file="$(mktemp)"
-    trap 'rm -f "$secrets_file"' EXIT
-    node -e "const fs=require('node:fs'); fs.writeFileSync(process.argv[1], JSON.stringify({ CF_TOKEN: process.env.CLOUDFLARE_API_TOKEN, CF_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID }))" "$secrets_file"
-    npx wrangler secret bulk "$secrets_file" --env production
+- run: node scripts/sync-worker-secrets.mjs
 - uses: cloudflare/wrangler-action@v3
   with:
     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
