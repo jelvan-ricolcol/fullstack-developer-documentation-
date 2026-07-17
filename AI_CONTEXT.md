@@ -104,6 +104,7 @@ This document is the persistent context file for AI assistants. It provides a cu
 ├── AUTHORIZATION.md            ← Permissions and RBAC
 ├── ENVIRONMENT_VARIABLES.md    ← All env vars
 ├── DEPLOYMENT.md               ← Deployment procedures
+├── UI_RESOURCES.md             ← UI assets, email HTML, and delivery guide
 ├── CLOUDFLARE.md               ← Cloudflare configuration
 ├── GITHUB.md                   ← GitHub governance
 ├── CI_CD.md                    ← CI/CD pipeline
