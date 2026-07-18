@@ -20,7 +20,7 @@
 
 This document provides complete, detailed, and verified information regarding `AI_RULES.md` within the **AI Rules** domain for this Fullstack Developer Documentation repository. It adheres to external verified sources and best practices.
 
-**Core Directive:** Always need to be aligned on the AI or every command. Maintain strict Professionalism.
+**Core Directive:** Always maintain alignment with the AI on every command. Maintain strict professionalism.
 
 ---
 
@@ -43,7 +43,7 @@ This document provides complete, detailed, and verified information regarding `A
 
 ### 4. Development and Improvement
 - Take small, incremental actions and validate changes immediately.
-- Continuously look for opportunities to refactor and optimize securely.
+- Continuously look for opportunities to refactor and optimize while maintaining security.
 - Leverage parallel validation tools (e.g., CodeQL, linting) consistently.
 
 ### 5. Deployment
@@ -62,7 +62,7 @@ The primary purpose of `AI_RULES.md` is to establish reliable, secure, and optim
 - Follow documented and verified external standards.
 - Ensure strict adherence to security and performance guidelines.
 - Maintain consistency with the existing documentation base.
-- Always need to be aligned on the AI or every command. Professionalism is required at all times.
+- Always align with AI directives and commands. Professionalism is required at all times.
 
 ---
 
