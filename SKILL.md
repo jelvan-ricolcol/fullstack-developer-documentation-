@@ -155,6 +155,11 @@ Words are organized into three tiers based on how reliably they signal AI-genera
 | genuinely / genuine (as intensifier) | (cut — just state the fact) |
 | symphony (metaphor) | (describe the actual coordination or combination) |
 | embrace (metaphor) | adopt, accept, use, switch to |
+| demystify / demystifying | explain, clarify, break down |
+| unlock / unlocking | enable, open, figure out |
+| master / mastering | learn, understand, get good at |
+| treasure trove | (describe what is actually there) |
+| navigate the complexities | handle the details, work through |
 | load-bearing *(metaphor)* | essential, critical, necessary — or say what breaks if you remove it |
 
 **Hyphen required:** unhyphenated "load bearing" is ordinary English ("the load bearing down on the bridge") — only the hyphenated compound is the tell.
@@ -204,6 +209,10 @@ These words are legitimate on their own. When two or more show up together, the 
 | nascent | new, early-stage, emerging |
 | quintessential | typical, classic, defining |
 | overarching | main, central, broad |
+| emerged as / has emerged as | is, became |
+| supercharge | improve, speed up, boost |
+| invaluable | useful, helpful, important |
+| indispensable | essential, necessary |
 | quietly | cut, or name the concrete contrast |
 | deeply *(significance collocations only — "deeply integrated," "deeply committed," "deeply rooted"; literal uses like "deeply nested" or "cares deeply" never count toward a cluster)* | cut, or name what specifically runs deep |
 | underpinning / underpinnings | basis, foundation, what supports |
@@ -255,7 +264,8 @@ These slot-fill constructions signal that a sentence was generated, not written.
 
 ### Transition phrases to remove or rewrite
 - "Moreover" / "Furthermore" / "Additionally" → restructure so the connection is obvious, or use "and," "also," "on top of that"
-- "In today's [X]" / "In an era where" → cut or state specific context
+- "In today's [X]" / "In an era where" / "In today's fast-paced digital landscape" → cut or state specific context
+- "Fast forward to today" → cut or state the current situation directly
 - "It's worth noting that" / "Notably" → just state the fact
 - "Here's what's interesting" / "Here's what caught my eye" / "Here's what stood out" → reader-steering frames. Let the content signal its own importance. If you need a lead-in, make it specific: "The revenue number matters because..." not "Here's the interesting part."
 - "In conclusion" / "In summary" / "To summarize" → your conclusion should be obvious
@@ -317,7 +327,7 @@ These slot-fill constructions signal that a sentence was generated, not written.
 - Note: "In order to," "Due to the fact that," and "At the end of the day" are covered in the word/phrase table and transition sections above — don't duplicate rules.
 
 ### Generic conclusions
-- "The future looks bright," "Only time will tell," "One thing is certain," "As we move forward" — these are filler disguised as conclusions. Cut them. If the piece needs a closing thought, make it specific to the argument.
+- "The future looks bright," "Only time will tell," "One thing is certain," "As we move forward," "Ultimately," "All in all" — these are filler disguised as conclusions. Cut them. If the piece needs a closing thought, make it specific to the argument.
 
 ### Chatbot artifacts
 - "I hope this helps!", "Certainly!", "Absolutely!", "Great question!", "Feel free to reach out," "Let me know if you need anything else" — these are conversational tics from chat interfaces, not writing. Remove entirely.
