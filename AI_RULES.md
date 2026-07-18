@@ -8,17 +8,48 @@
 
 | Field | Value |
 |---|---|
-| **Version** | 1.0.0 |
+| **Version** | 1.1.0 |
 | **Owner** | @jelvan-ricolcol |
-| **Last Updated** | 2026-07-17 |
+| **Last Updated** | 2026-07-18 |
 | **Status** | Active |
-| **Scope** | AI Rules |
+| **Scope** | AI Rules & Best Practices |
 
 ---
 
 ## Overview
 
 This document provides complete, detailed, and verified information regarding `AI_RULES.md` within the **AI Rules** domain for this Fullstack Developer Documentation repository. It adheres to external verified sources and best practices.
+
+**Core Directive:** Always need to be aligned on the AI or every command. Maintain strict Professionalism.
+
+---
+
+## AI Rules and Best Practices
+
+### 1. Planning
+- All tasks must begin with a clear, minimal-change plan.
+- Ensure thorough understanding of requirements before executing commands.
+- Align planning strategies with the overall AI objectives and system context.
+
+### 2. Documentation
+- Document all changes meticulously.
+- Ensure that every AI-generated change updates the relevant knowledge base files.
+- Maintain a documentation-first approach for all features and fixes.
+
+### 3. Coding
+- Write clean, modular, and maintainable code.
+- Prioritize using ecosystem tools and standard libraries over custom scripts.
+- Ensure all code conforms to established security and formatting standards.
+
+### 4. Development and Improvement
+- Take small, incremental actions and validate changes immediately.
+- Continuously look for opportunities to refactor and optimize securely.
+- Leverage parallel validation tools (e.g., CodeQL, linting) consistently.
+
+### 5. Deployment
+- Never deploy without human review or passing all automated CI checks.
+- Adhere strictly to the defined deployment state machines and policies.
+- Ensure environment variables and secrets are handled securely without being hardcoded.
 
 ---
 
@@ -31,48 +62,17 @@ The primary purpose of `AI_RULES.md` is to establish reliable, secure, and optim
 - Follow documented and verified external standards.
 - Ensure strict adherence to security and performance guidelines.
 - Maintain consistency with the existing documentation base.
+- Always need to be aligned on the AI or every command. Professionalism is required at all times.
 
 ---
-
-## Detailed Guidelines & Coding Examples
-
-### Example Implementations
-Below are verified examples demonstrating standard approaches and best practices related to `AI_RULES.md`.
-
-```javascript
-// Example implementation for AI_RULES.md
-function initAirules() {
-    console.log("Initializing AI_RULES.md configuration...");
-    // Configuration details and verified logic
-    return true;
-}
-
-initAirules();
-```
-
-### Important Configurations
-```json
-{
-  "module": "AI_RULES.md",
-  "status": "enabled",
-  "version": "1.0.0",
-  "dependencies": []
-}
-```
-
----
-
-## Reference & Verified Sources
-Information in this document incorporates standard industry practices verified by official documentations and reputable external websites relevant to **AI Rules**.
 
 ## Version History
 
 | Version | Date | Change |
 |---|---|---|
+| 1.1.0 | 2026-07-18 | Added rules and best practices for planning, documentation, coding, development and improvement, and deployment |
 | 1.0.0 | 2026-07-17 | Initial document creation based on verified sources |
 
 ---
 
-
----
 *Enterprise AI-First Development Standard - [Return to Index](INDEX.md)*
